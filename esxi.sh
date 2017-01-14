@@ -11,7 +11,7 @@ sleeptime=120
 
 #Variables
 ESXiIP=10.10.10.62 #ESXi IP ADDRESS
-ESXiPass=MLG2011!a #ESXi Root Password
+ESXiPass= #ESXi Root Password
 
 #Get the Core Count via SSH
 corecount=$(sshpass -f /home/hammer/scripts/password ssh -oStrictHostKeyChecking=no -t root@10.10.10.62 "grep -c ^processor /proc/cpuinfo" 2> /dev/null)
