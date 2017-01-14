@@ -67,6 +67,12 @@ echo 'telegraf_enable=YES' >> /etc/rc.conf
 ```
 
 Next, we need to update the telegraf.conf file. We only need to update a couple of sections so I'll list those here. I created the database "pfsense" in InfluxDB so I listed it here. Yours may differ depending on what database you create.
+If I recall correctly, there was only a sample file first. Edit the sample file, then cp it to the conf. (I'll explained this more after we edit the file)
+```
+cd /usr/local/etc
+vi telegraf.conf.sample
+```
+
 ```
 [[outputs.influxdb]]
   urls = ["http://10.10.10.104:8089"]
@@ -87,7 +93,14 @@ To enable network statstic we need to un comment the [[inputs.net]] section. Onl
 #   # interfaces = ["eth0"]  
 ```
 
-Once we've updated the files, we simply need to start telegraf.
+Once we've updated the files, we need to move the sample file to the primary conf file.
+```
+cp telegraf.conf.sample telegraf.conf
+```
+This will cp the file so we always have a "backup". 
+
+Lastly start Telegraf. 
+
 ```
 cd /usr/local/etc/rc.d
 ./telegraf start
