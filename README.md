@@ -2,7 +2,7 @@
 Grafana Scripts for Cyan Server
 Cyan Server is built ontop of 16.04 and Docker so some scripts/commands will change depending on your OS. 
 
-A lot of these scripts have a couple of requirements.
+There are some requirements across the scripts, so if you're planning to use them all, you'll need these three. 
 
 SSHPass
 ```

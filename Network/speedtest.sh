@@ -6,7 +6,7 @@
 #This script requires speedtest-cli to function!!!!!!!!!!!!!!!!!!!!!!!
 
 #The time we are going to sleep between readings
-sleeptime=60
+sleeptime=3600
 
 #Prepare to start the loop and warn the user
 echo "Press [CTRL+C] to stop..."
