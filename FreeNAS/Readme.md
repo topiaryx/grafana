@@ -1,3 +1,11 @@
+# FreeNAS
+Most of the stats I collect from FreeNAS are done through collectd and Graphite. Luckily for me, FreeNAS has these built in.
+You'll need to have collectd and graphite installed. 
+
+To set FreeNAS up with Graphite, you'll need to go to System > Advanced, and update the "Remote Graphite Server Hostname" to the IP address of Graphite. It does not require the port since graphite runs on port 80. 
+
+Once thats set, you're collecting data from FreeNAS. A lot of stats can be collected by importing the FreeNASUsage.json as a grafana dashboard.
+
 # FreeNAS Drive Health
 
 I am unaware of the origianl creator of these scripts. If you know, please let me know so I can update and give proper credit.   
