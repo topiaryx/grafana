@@ -39,7 +39,7 @@ At the end of the script is the location where it looks for the config.ini file.
 ('--config', default='/home/hammer/scripts/plex/config.ini',
 ```
 
-! I did run into some interesting permission issues with the output.log file so you may need to create the file before hand and give it the propper permissions. 
+**NOTE: I did run into some interesting permission issues with the output.log file so you may need to create the file before hand and give it the propper permissions. **
 
 # Services
 I created a service file to allow this script to run on boot. These service files are for Ubuntu 16.04.  

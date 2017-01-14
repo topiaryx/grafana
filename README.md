@@ -66,8 +66,8 @@ Make sure you can start it by
 echo 'telegraf_enable=YES' >> /etc/rc.conf
 ```
 
-Next, we need to update the telegraf.conf file. We only need to update a couple of sections so I'll list those here. I created the database "pfsense" in InfluxDB so I listed it here. Yours may differ depending on what database you create.
-If I recall correctly, there was only a sample file first. Edit the sample file, then cp it to the conf. (I'll explained this more after we edit the file)
+Next, we need to update the telegraf.conf file. We only need to update a couple of sections so I'll list those here. I created the database "pfsense" in InfluxDB so I listed it here. Yours may differ depending on what database you create.  
+*If I recall correctly, there was only a sample file first. Edit the sample file, then cp it to the conf. (I'll explained this more after we edit the file)*
 ```
 cd /usr/local/etc
 vi telegraf.conf.sample

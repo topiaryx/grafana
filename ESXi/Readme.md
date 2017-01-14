@@ -38,7 +38,7 @@ curl -i -XPOST 'http://10.10.10.104:8086/write?db=home' --data-binary "esxi_stat
 
 And you're set! 
 
-! I did have trouble with ESXi 6.5 randomly shutting SNMP off on me. 
+**NOTE: I did have trouble with ESXi 6.5 randomly shutting SNMP off on me.**
 
 # Service
 Service file is simple.
