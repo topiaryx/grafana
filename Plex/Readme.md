@@ -1,5 +1,7 @@
 #Instructions for configuring
 
+Before we begin, this script was created by reddit user /u/BarryCarey. His original scripts can be found https://github.com/barrycarey/Plex-Data-Collector-For-InfluxDB
+
 ## Requirements
 
 This script requires Python3+ .
