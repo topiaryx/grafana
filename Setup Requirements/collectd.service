@@ -7,8 +7,8 @@
  User=root
  Restart=on-failure
  RestartSec=45
- ExecStart=/usr/bin/docker start -a reverent_kalam
- ExecStop=/usr/bin/docker stop -t 2 reverent_kalam
+ ExecStart=/usr/bin/docker start -a collectd
+ ExecStop=/usr/bin/docker stop -t 2 collectd
 
 [Install]
  WantedBy=multi-user.target
