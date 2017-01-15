@@ -58,9 +58,9 @@ do
 	echo "$upload"
 	
 	#Write to the database
-	curl -i -XPOST 'http://10.10.10.104:8086/write?db=home' --data-binary "speedtest,metric=ping value=$ping"
-	curl -i -XPOST 'http://10.10.10.104:8086/write?db=home' --data-binary "speedtest,metric=download value=$download"
-	curl -i -XPOST 'http://10.10.10.104:8086/write?db=home' --data-binary "speedtest,metric=upload value=$upload"
+	curl -i -XPOST 'http://INFLUXDBIP:8086/write?db=home' --data-binary "speedtest,metric=ping value=$ping"
+	curl -i -XPOST 'http://INFLUXDBIP:8086/write?db=home' --data-binary "speedtest,metric=download value=$download"
+	curl -i -XPOST 'http://INFLUXDBIP:8086/write?db=home' --data-binary "speedtest,metric=upload value=$upload"
 
 	#Wait for a bit before checking again
 	sleep "$sleeptime"

@@ -15,7 +15,7 @@ drives="INSERT DRIVES daX or adaX"
         for drive in $drives
         do
           temp="$(smartctl -A /dev/${drive} | grep "Temperature_Celsius" | awk '{print $10}')"
-          curl -i -XPOST 'http://INFLUXDB IP/write?db=home' --data-binary "health_data,host=<HOSTNAME>,sensor=$drive value=$temp"
+          curl -i -XPOST 'http://INFLUXDBIP:8086/write?db=home' --data-binary "health_data,host=<HOSTNAME>,sensor=$drive value=$temp"
         done
 
 #Wait for a bit before checking again

@@ -5,7 +5,7 @@ After=influxdb.service
 
 [Service]
 Type=simple
-User=hammer
+User=root
 ExecStart=/bin/bash -x /home/hammer/scripts/esxi/esxi.sh
 
 [Install]

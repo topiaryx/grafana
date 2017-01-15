@@ -60,11 +60,11 @@ do
 	mdev=${numbersarray[3]}
 
 	#Write the data to the database
-	curl -i -XPOST 'http://10.10.10.104:8086/write?db=home' --data-binary "ping,host=8.8.8.8,measurement=loss value=$lossnumber"
-	curl -i -XPOST 'http://10.10.10.104:8086/write?db=home' --data-binary "ping,host=8.8.8.8,measurement=min value=$min"
-	curl -i -XPOST 'http://10.10.10.104:8086/write?db=home' --data-binary "ping,host=8.8.8.8,measurement=avg value=$avg"
-	curl -i -XPOST 'http://10.10.10.104:8086/write?db=home' --data-binary "ping,host=8.8.8.8,measurement=max value=$max"
-	curl -i -XPOST 'http://10.10.10.104:8086/write?db=home' --data-binary "ping,host=8.8.8.8,measurement=mdev value=$mdev"
+	curl -i -XPOST 'http://INFLUXDBIP:8086/write?db=home' --data-binary "ping,host=8.8.8.8,measurement=loss value=$lossnumber"
+	curl -i -XPOST 'http://INFLUXDBIP:8086/write?db=home' --data-binary "ping,host=8.8.8.8,measurement=min value=$min"
+	curl -i -XPOST 'http://INFLUXDBIP:8086/write?db=home' --data-binary "ping,host=8.8.8.8,measurement=avg value=$avg"
+	curl -i -XPOST 'http://INFLUXDBIP:8086/write?db=home' --data-binary "ping,host=8.8.8.8,measurement=max value=$max"
+	curl -i -XPOST 'http://INFLUXDBIP:8086/write?db=home' --data-binary "ping,host=8.8.8.8,measurement=mdev value=$mdev"
 	
 	#Wait for a bit before checking again
 	sleep "$sleeptime"

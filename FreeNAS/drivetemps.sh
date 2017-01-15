@@ -13,7 +13,7 @@ echo "Press [CTRL+C] to stop..."
 while :
 do
 #Connect to FreeNAS
-    connect=$(sshpass -f /home/hammer/scripts/password ssh -oStrictHostKeyChecking=no root@10.10.10.63 "/bin/sh /root/scripts/hdd_temp.sh" >/dev/null)
+    connect=$(sshpass -f /path/to/password/file ssh -oStrictHostKeyChecking=no USER@ESXiIP "/bin/sh /root/scripts/hdd_temp.sh" >/dev/null)
 #Wait for a bit before checking again
 sleep 15m
 done

@@ -10,11 +10,11 @@
 sleeptime=120
 
 #Variables
-ESXiIP=10.10.10.62 #ESXi IP ADDRESS
-ESXiPass=#ESXi Root Password
+ESXiIP=XXX.XXX.XXX.XXX #ESXi IP ADDRESS
+ESXiPass=XXXXX #ESXi Root Password
 
 #Get the Core Count via SSH
-corecount=$(sshpass -f /home/hammer/scripts/password ssh -oStrictHostKeyChecking=no -t root@10.10.10.62 "grep -c ^processor /proc/cpuinfo" 2> /dev/null)
+corecount=$(sshpass -f /path/to/password/file ssh -oStrictHostKeyChecking=no -t USER@ESXiIP "grep -c ^processor /proc/cpuinfo" 2> /dev/null)
 corecount=$(echo $corecount | sed 's/\r$//')
 
 
@@ -33,12 +33,12 @@ do
                 CPUs[$i]="$(snmpget -v 2c -c Public 10.10.10.62 HOST-RESOURCES-MIB::hrProcessorLoad."$i" -Ov)"
                 CPUs[$i]="$(echo "${CPUs["$i"]}" | cut -c 10-)"
                 echo "CPU"$i": ${CPUs["$i"]}%"
-                curl -i -XPOST 'http://10.10.10.104:8086/write?db=home' --data-binary "esxi_stats,host=esxi3,type=cpu_usage,cpu_number=$i value=${CPUs[$i]}"
+                curl -i -XPOST 'http://INFLUXDBIP:8086/write?db=home' --data-binary "esxi_stats,host=esxi3,type=cpu_usage,cpu_number=$i value=${CPUs[$i]}"
         done
                 i=0
 
 
-        hwinfo=$(sshpass -f /home/hammer/scripts/password ssh -oStrictHostKeyChecking=no -t root@10.10.10.62 "esxcfg-info --hardware")
+        hwinfo=$(sshpass -f /path/to/password/file ssh -oStrictHostKeyChecking=no -t USER@ESXiIP "esxcfg-info --hardware")
 
         #Lets try to find the lines we are looking for
         while read -r line; do
@@ -79,7 +79,7 @@ IFS='.' read -ra kmemarr <<< "$kmemline"
         echo "Memory Used: $pcent%"
 
 
-        curl -i -XPOST 'http://10.10.10.104:8086/write?db=home' --data-binary "esxi_stats,host=esxi3,type=memory_usage value=$pcent"
+        curl -i -XPOST 'http://INFLUXDBIP:8086/write?db=home' --data-binary "esxi_stats,host=esxi3,type=memory_usage value=$pcent"
 
 
         #Wait for a bit before checking again
