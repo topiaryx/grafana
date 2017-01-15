@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# Docker Installation with Grafana, InfluxDB, CollectD & Graphite
-# This script includes all auto start files
+# This script will install Docker, Grafana, InfluxDB, Graphite & CollectD. It will also add systemd service files to ensure auto startup each boot. 
+# This script was created by reddit user /u/tyler_hammer. This is a combination of several guides with edits to make it as easy as possible for new people to start. 
+# 
 
 # Docker Installation for Ubuntu 16.04
 
@@ -21,7 +22,7 @@ apt-cache policy docker-engine
 # Install Docker
 sudo apt-get install -y docker-engine
 
-# Execute
+# Remove the need to user Sudo before docker. This generally requires you to log out and log back in, which is why we restart at the end of the script.
 sudo usermod -aG docker $(whoami)
 
 # Grafana Install - Docker - Ubuntu 16.04
@@ -40,7 +41,7 @@ grafana/grafana
 # Start Grafana Docker
 sudo docker start grafana
 
-# Make Bin folder
+# Make Bin folder for update scripts
 sudo mkdir ~/bin
 
 # Download Grafana Update Script
@@ -87,7 +88,7 @@ sudo systemctl enable influxdb.service
 
 # CollecD Install - Docker - Ubuntu 16.04
 
-# Install
+# Create CollectD Container
 sudo docker create \
   --name collectd\
   -e "SF_API_TOKEN=XXXXXXXXXXXXXXXXXXXXXX" \
@@ -106,7 +107,7 @@ sudo systemctl enable collectd.service
 
 # Graphite Install - Docker - Ubuntu 16.04
 
-# Install
+# Create Graphite Container
 sudo docker run -d\
  --name graphite\
  --restart=always\
