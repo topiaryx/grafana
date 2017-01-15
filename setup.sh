@@ -38,7 +38,7 @@ sudo docker create \
 grafana/grafana
 
 # Start Grafana Docker
-docker start grafana
+sudo docker start grafana
 
 # Make Bin folder
 sudo mkdir ~/bin
@@ -74,7 +74,7 @@ sudo docker create \
 influxdb -config /etc/influxdb/influxdb.conf
 
 # Start InfluxDB
-docker start influxdb
+sudo docker start influxdb
 
 # Create Influx Update Script
 sudo wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/influxdbupdate.sh -O ~/bin/influxupdate.sh
