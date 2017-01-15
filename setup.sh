@@ -122,3 +122,9 @@ sudo wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20R
 
 # Enable Service
 sudo systemctl enable graphite.service
+
+# Restart Announcment
+echo Restarting VM
+
+# Restart
+sudo reboot
