@@ -59,7 +59,7 @@ sudo mkdir -p /docker/containers/influxdb/conf/
 sudo mkdir -p /docker/containers/influxdb/db/
 
 # Check Ownership
-sudo chown root:root -R /docker
+sudo chown ${USER:=$(/usr/bin/id -run)}:$USER -R /docker
 
 # Generate Default Config
 sudo docker run --rm influxdb influxd config > /docker/containers/influxdb/conf/influxdb.conf
