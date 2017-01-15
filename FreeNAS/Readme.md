@@ -40,12 +40,12 @@ root@10.10.10.63
 # Service
 Service file is pretty straight forward. 
 ```
-sudo nano /lib/systemd/system/drivetemp.service
+sudo nano /lib/systemd/system/drivetemps.service
 ```
 
 Paste in the script and update your username and file path to match your system. 
 
 ```
-systemctl enable drivetemp.service
-systemctl start drivetemp.service
+systemctl enable drivetemps.service
+systemctl start drivetemps.service
 ```
