@@ -44,10 +44,10 @@ docker start grafana
 sudo mkdir ~/bin
 
 # Download Grafana Update Script
-sudo wget https://gist.githubusercontent.com/tylerhammer/205f0e4096ee0381138bbbed6a6b46d0/raw/8a3d92c678aac90be63ada60f45a40f66090c693/grafanaupdate.sh -O ~/bin/updategrafana.sh
+sudo wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/grafanaupdate.sh -O ~/bin/updategrafana.sh
 
 # Create Auto Start Service
-sudo wget https://gist.githubusercontent.com/tylerhammer/0cce375aa7db436ac69369014e2e27ed/raw/e04b8f0e3aa008a92d2b4822ca144a261b340b2a/grafana.service -O /lib/systemd/system/grafana.service
+sudo wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/grafana.service -O /lib/systemd/system/grafana.service
 
 # Enable Grafana Service
 sudo systemctl enable grafana.service
@@ -77,10 +77,10 @@ influxdb -config /etc/influxdb/influxdb.conf
 docker start influxdb
 
 # Create Influx Update Script
-sudo wget https://gist.githubusercontent.com/tylerhammer/f5b3c291480efab4d10cea84073c2e24/raw/1cdc374574c322ad3fafd46aa417b5e4cac59e58/influxupdate.sh -O ~/bin/influxupdate.sh
+sudo wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/influxdbupdate.sh -O ~/bin/influxupdate.sh
 
 # Setup Auto Start
-sudo wget https://gist.githubusercontent.com/tylerhammer/8960cb295cc8c7203da7399b8a463d94/raw/8660b4007267a55d096547d3c377cf81fa519a04/influxdb.service -O /lib/systemd/system/influxdb.service
+sudo wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/influxdb.service -O /lib/systemd/system/influxdb.service
 
 # Enable Service
 sudo systemctl enable influxdb.service
@@ -98,7 +98,7 @@ sudo docker create \
   
   
 # Auto Start
-sudo wget https://gist.githubusercontent.com/tylerhammer/468911ffc705127693c63a3acf3ed939/raw/9f876d492fbbb56a733eb497d3c962b4af77f68f/collectd.service -O /lib/systemd/system/collectd.service
+sudo wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/collectd.service -O /lib/systemd/system/collectd.service
 
 # Enable Service
 sudo systemctl enable collectd.service
@@ -117,7 +117,7 @@ sudo docker run -d\
  hopsoft/graphite-statsd
  
 # Auto Start
-sudo wget https://gist.githubusercontent.com/tylerhammer/41c0305d169ca88eb712d9c3cd5fec07/raw/bd83fa919eccabbc52ccf41983b390a667f0dfd6/graphite.service -O /lib/systemd/system/graphite.service
+sudo wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/graphite.service -O /lib/systemd/system/graphite.service
 
 # Enable Service
 sudo systemctl enable graphite.service
