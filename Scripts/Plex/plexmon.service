@@ -5,7 +5,7 @@ After=influxdb.service
 
 [Service]
 Type=idle
-User=root
+User=USER
 ExecStart=/usr/bin/python3 /home/hammer/scripts/plex/plexInfluxdbCollector.py
 
 [Install]
