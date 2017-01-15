@@ -1,6 +1,8 @@
 # Cyan Grafana
 Grafana Scripts for Cyan Server
-Cyan Server is built ontop of 16.04 and Docker so some scripts/commands will change depending on your OS. 
+Cyan Server is built ontop of 16.04 and Docker so some scripts/commands will change depending on your OS.   
+
+I've added a Setup.sh script. This will install Docker, Grafana, Influx, CollectD and Graphite for you on an Ubuntu 16.04 Server VM. 
 
 There are some requirements across the scripts, so if you're planning to use them all, you'll need these three. 
 

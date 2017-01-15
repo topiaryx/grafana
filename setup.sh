@@ -27,10 +27,10 @@ sudo usermod -aG docker $(whoami)
 # Grafana Install - Docker - Ubuntu 16.04
 
 # Create Persistent Storage
-docker run -d -v /var/lib/grafana --name grafana-storage busybox:latest
+sudo docker run -d -v /var/lib/grafana --name grafana-storage busybox:latest
 
 # Create Grafana Docker
-docker create \
+sudo docker create \
 --name=grafana \
 -p 3000:3000 \
 --volumes-from grafana-storage \
@@ -43,14 +43,14 @@ docker start grafana
 # Make Bin folder
 sudo mkdir ~/bin
 
-# Download Update Script
+# Download Grafana Update Script
 sudo wget https://gist.githubusercontent.com/tylerhammer/205f0e4096ee0381138bbbed6a6b46d0/raw/8a3d92c678aac90be63ada60f45a40f66090c693/grafanaupdate.sh -O ~/bin/updategrafana.sh
 
 # Create Auto Start Service
-sudo wget https://gist.githubusercontent.com/tylerhammer/0cce375aa7db436ac69369014e2e27ed/raw/2e581aa1d3dd4857fe7ba5f66bbfd20b9699c5cf/grafana.service -O /lib/systemd/system/grafana.service
+sudo wget https://gist.githubusercontent.com/tylerhammer/0cce375aa7db436ac69369014e2e27ed/raw/e04b8f0e3aa008a92d2b4822ca144a261b340b2a/grafana.service -O /lib/systemd/system/grafana.service
 
 # Enable Grafana Service
-systemctl enable grafana.service
+sudo systemctl enable grafana.service
 
 # InfluxDB - Docker - Ubuntu 16.04
 
@@ -62,10 +62,10 @@ sudo mkdir -p /docker/containers/influxdb/db/
 sudo chown root:root -R /docker
 
 # Generate Default Config
-docker run --rm influxdb influxd config > /docker/containers/influxdb/conf/influxdb.conf
+sudo docker run --rm influxdb influxd config > /docker/containers/influxdb/conf/influxdb.conf
 
 # Create InfluxDB Container
-docker create \
+sudo docker create \
 --name influxdb \
 -e PUID=1000 -e PGID=1000 \
 -p 8083:8083 -p 8086:8086 \
@@ -76,19 +76,19 @@ influxdb -config /etc/influxdb/influxdb.conf
 # Start InfluxDB
 docker start influxdb
 
-# Create Update Script
-wget https://gist.githubusercontent.com/tylerhammer/f5b3c291480efab4d10cea84073c2e24/raw/1cdc374574c322ad3fafd46aa417b5e4cac59e58/influxupdate.sh -O ~/bin/influxupdate.sh
+# Create Influx Update Script
+sudo wget https://gist.githubusercontent.com/tylerhammer/f5b3c291480efab4d10cea84073c2e24/raw/1cdc374574c322ad3fafd46aa417b5e4cac59e58/influxupdate.sh -O ~/bin/influxupdate.sh
 
 # Setup Auto Start
-wget https://gist.githubusercontent.com/tylerhammer/8960cb295cc8c7203da7399b8a463d94/raw/96f869255c5709c851cbac01a49093e697c86349/influxdb.service -O /lib/systemd/system/influxdb.service
+sudo wget https://gist.githubusercontent.com/tylerhammer/8960cb295cc8c7203da7399b8a463d94/raw/8660b4007267a55d096547d3c377cf81fa519a04/influxdb.service -O /lib/systemd/system/influxdb.service
 
 # Enable Service
-systemctl enable influxdb.service
+sudo systemctl enable influxdb.service
 
 # CollecD Install - Docker - Ubuntu 16.04
 
 # Install
-docker create \
+sudo docker create \
   -e "SF_API_TOKEN=XXXXXXXXXXXXXXXXXXXXXX" \
   -v /etc/hostname:/mnt/hostname:ro \
   -v /proc:/mnt/proc:ro \
@@ -98,15 +98,15 @@ docker create \
   
   
 # Auto Start
-wget https://gist.githubusercontent.com/tylerhammer/468911ffc705127693c63a3acf3ed939/raw/400cda9ededd099681c6d428256998f624b0b07c/collectd.service -O /lib/systemd/system/collectd.service
+sudo wget https://gist.githubusercontent.com/tylerhammer/468911ffc705127693c63a3acf3ed939/raw/9f876d492fbbb56a733eb497d3c962b4af77f68f/collectd.service -O /lib/systemd/system/collectd.service
 
 # Enable Service
-systemctl enable collectd.service
+sudo systemctl enable collectd.service
 
 # Graphite Install - Docker - Ubuntu 16.04
 
 # Install
-docker run -d\
+sudo docker run -d\
  --name graphite\
  --restart=always\
  -p 80:80\
@@ -117,7 +117,7 @@ docker run -d\
  hopsoft/graphite-statsd
  
 # Auto Start
-wget https://gist.githubusercontent.com/tylerhammer/41c0305d169ca88eb712d9c3cd5fec07/raw/5c062868571951e92ab6a9697d4def26825f0780/graphite.service -O /lib/systemd/system/graphite.service
+sudo wget https://gist.githubusercontent.com/tylerhammer/41c0305d169ca88eb712d9c3cd5fec07/raw/bd83fa919eccabbc52ccf41983b390a667f0dfd6/graphite.service -O /lib/systemd/system/graphite.service
 
 # Enable Service
-systemctl enable graphite.service
+sudo systemctl enable graphite.service
