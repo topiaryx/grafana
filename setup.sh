@@ -89,6 +89,7 @@ sudo systemctl enable influxdb.service
 
 # Install
 sudo docker create \
+  --name collectd\
   -e "SF_API_TOKEN=XXXXXXXXXXXXXXXXXXXXXX" \
   -v /etc/hostname:/mnt/hostname:ro \
   -v /proc:/mnt/proc:ro \
