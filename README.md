@@ -11,23 +11,23 @@ To accomplish this, we'll use the <html><strong><a href="https://github.com/tyle
 <html></br></html>
 
 **1. Lets download the script using wget, and the RAW link to the script on github. This will download the script and rename it to "setup.sh".**
-<code>
+```
 wget https://raw.githubusercontent.com/tylerhammer/grafana/master/setup.sh - O setup.sh
-</code>
+```
 
 <html></br></html>
 
 **2. Next we need to give it permission to run.**
-<code>
+```
 sudo chmod +x setup.sh
-</code>
+```
 
 <html></br></html>
 
 **3. Of course, now we need to run it!**
-<code>
+```
 ./setup.sh
-</code>
+```
 
 <html></br></html>
 
@@ -43,4 +43,4 @@ If you're able to access Grafana, Congrats! You've officially set up the base fo
 
 <html></br></html>
 
-Continue on to the next step where we look at some scripts to start getting data into your InfluxDB server and into Grafana. **[[grafana:data| Part: Two]]**
+Continue on to the next step where we look at some scripts to start getting data into your InfluxDB server and into Grafana.
