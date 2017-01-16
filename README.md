@@ -33,7 +33,7 @@ sudo chmod +x setup.sh
 
 Once the script has finished, it will reboot the VM. This is to apply a change where we remove the need to use "sudo" before a docker command. 
 
-Once we are booted back up, run <html><code>docker ps -a</code></html>. This will list all current containers and their status. We are looking for something a long the lines of {{:s7tkuf9.png|}}
+Once we are booted back up, run <html><code>docker ps -a</code></html>. This will list all current containers and their status. We are looking for something a long the lines of ![](http://i.imgur.com/s7tKUf9.png)
 
 <html></br></html>
 
