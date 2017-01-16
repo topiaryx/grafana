@@ -1,0 +1,12 @@
+[Unit]
+Description=Plex Monitor
+Requires=influxdb.service
+After=influxdb.service
+
+[Service]
+Type=idle
+User=USER
+ExecStart=/usr/bin/python3 /home/hammer/scripts/plex/plexInfluxdbCollector.py
+
+[Install]
+WantedBy=default.target 
