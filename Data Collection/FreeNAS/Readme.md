@@ -18,7 +18,7 @@ In the script, you will need to edit
 ```
 drives="INSERT DRIVES daX or adaX"
 ```
-You must list every drive you wish for it to check. 
+You must list every drive you wish for it to check. I.E. "da0 da1 da2 da3" etc etc. 
 
 You must also update the InfluxDB IP and database name if you so choose.
 ```

@@ -43,4 +43,6 @@ If you're able to access Grafana, Congrats! You've officially set up the base fo
 
 <html></br></html>
 
-To continue and start getting data into Influx and Grafana, take a look at the [Data Collection](https://github.com/tylerhammer/grafana/tree/master/Data%20Collection) section and see if if a service you're looking for is listed there. 
+To continue and start getting data into Influx and Grafana, take a look at the [Data Collection](https://github.com/tylerhammer/grafana/tree/master/Data%20Collection) section and see if there is a service you're looking for, is listed there. 
+
+Note: If you have comments or suggestions for anything listed, please feel free reach out to me at git@tylerhammer.com
