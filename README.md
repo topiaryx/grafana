@@ -1,6 +1,6 @@
 # Cyan Server Grafana Setup!
 
-If you're like me, you want to set up Grafana and have it looking nice and pretty, but you just don't know where to start and there are too many guides that are not very detailed or just don't have the right information. I'm created this guide to attempt to resolve that issue by making this extremely easy and straight forward, as well as by putting as much detail in to the process as I can. 
+If you're like me, you want to set up Grafana and have it looking nice and pretty, but you just don't know where to start and there are too many guides that are not very detailed or just don't have the right information. I've created this guide to attempt to resolve that issue by making this extremely easy and straight forward, as well as by putting as much detail in to the process as I can. 
 
 **So lets jump right on into it!**
 
@@ -43,4 +43,4 @@ If you're able to access Grafana, Congrats! You've officially set up the base fo
 
 <html></br></html>
 
-Continue on to the next step where we look at some scripts to start getting data into your InfluxDB server and into Grafana.
+To continue and start getting data into Influx and Grafana, take a look at the [Data Collection](https://github.com/tylerhammer/grafana/tree/master/Data%20Collection) section and see if if a service you're looking for is listed there. 
