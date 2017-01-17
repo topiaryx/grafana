@@ -33,7 +33,7 @@ do
                 CPUs[$i]="$(snmpget -v 2c -c Public ESXi-IP HOST-RESOURCES-MIB::hrProcessorLoad."$i" -Ov)"
                 CPUs[$i]="$(echo "${CPUs["$i"]}" | cut -c 10-)"
                 echo "CPU"$i": ${CPUs["$i"]}%"
-                curl -i -XPOST 'http://INFLUXDBIP:8086/write?db=home' --data-binary "esxi_stats,host=esxi3,type=cpu_usage,cpu_number=$i value=${CPUs[$i]}"
+                curl -i -XPOST 'http://INFLUXDBIP:8086/write?db=home' --data-binary "esxi_stats,host=esxi,type=cpu_usage,cpu_number=$i value=${CPUs[$i]}"
         done
                 i=0
 
