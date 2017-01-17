@@ -2,33 +2,41 @@
 
 # This script will install Docker, Grafana, InfluxDB, Graphite & CollectD. It will also add systemd service files to ensure auto startup each boot. 
 # This script was created by reddit user /u/tyler_hammer. This is a combination of several guides with edits to make it as easy as possible for new people to start. 
-# 
+
+# Checking for Root Permissions 
+check_your_privilege () {
+    if [[ "$(id -u)" != 0 ]]; then
+        echo "E: Requires root permissions" > /dev/stderr
+        exit 1
+    fi
+}
+check_your_privilege
 
 # Docker Installation for Ubuntu 16.04
 
 # Update Package Database
-sudo apt-get update
+apt-get update
 
 # Add GPG Key for Docker Repo
-sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
 echo "deb https://apt.dockerproject.org/repo ubuntu-xenial main" | sudo tee /etc/apt/sources.list.d/docker.list
 
 # Update Database
-sudo apt-get update
+apt-get update
 
 # Verify Repo
 apt-cache policy docker-engine
 
 # Install Docker
-sudo apt-get install -y docker-engine
+apt-get install -y docker-engine
 
 # Remove the need to user Sudo before docker. This generally requires you to log out and log back in, which is why we restart at the end of the script.
-sudo usermod -aG docker $(whoami)
+usermod -aG docker $(whoami)
 
 # Grafana Install - Docker - Ubuntu 16.04
 
 # Create Persistent Storage
-sudo docker run -d -v /var/lib/grafana --name grafana-storage busybox:latest
+docker run -d -v /var/lib/grafana --name grafana-storage busybox:latest
 
 # Create Grafana Docker
 sudo docker create \
@@ -39,34 +47,34 @@ sudo docker create \
 grafana/grafana
 
 # Start Grafana Docker
-sudo docker start grafana
+docker start grafana
 
 # Make Bin folder for update scripts
-sudo mkdir ~/bin
+mkdir ~/bin
 
 # Download Grafana Update Script
-sudo wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/grafanaupdate.sh -O ~/bin/updategrafana.sh
+wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/grafanaupdate.sh -O ~/bin/updategrafana.sh
 
 # Create Auto Start Service
-sudo wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/grafana.service -O /lib/systemd/system/grafana.service
+wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/grafana.service -O /lib/systemd/system/grafana.service
 
 # Enable Grafana Service
-sudo systemctl enable grafana.service
+systemctl enable grafana.service
 
 # InfluxDB - Docker - Ubuntu 16.04
 
 # Create Local Storage
-sudo mkdir -p /docker/containers/influxdb/conf/
-sudo mkdir -p /docker/containers/influxdb/db/
+mkdir -p /docker/containers/influxdb/conf/
+mkdir -p /docker/containers/influxdb/db/
 
 # Check Ownership
-sudo chown ${USER:=$(/usr/bin/id -run)}:$USER -R /docker
+chown ${USER:=$(/usr/bin/id -run)}:$USER -R /docker
 
 # Generate Default Config
-sudo docker run --rm influxdb influxd config > /docker/containers/influxdb/conf/influxdb.conf
+docker run --rm influxdb influxd config > /docker/containers/influxdb/conf/influxdb.conf
 
 # Create InfluxDB Container
-sudo docker create \
+docker create \
 --name influxdb \
 -e PUID=1000 -e PGID=1000 \
 -p 8083:8083 -p 8086:8086 \
@@ -75,21 +83,21 @@ sudo docker create \
 influxdb -config /etc/influxdb/influxdb.conf
 
 # Start InfluxDB
-sudo docker start influxdb
+docker start influxdb
 
 # Create Influx Update Script
-sudo wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/influxdbupdate.sh -O ~/bin/influxupdate.sh
+wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/influxdbupdate.sh -O ~/bin/influxupdate.sh
 
 # Setup Auto Start
-sudo wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/influxdb.service -O /lib/systemd/system/influxdb.service
+wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/influxdb.service -O /lib/systemd/system/influxdb.service
 
 # Enable Service
-sudo systemctl enable influxdb.service
+systemctl enable influxdb.service
 
 # CollecD Install - Docker - Ubuntu 16.04
 
 # Create CollectD Container
-sudo docker create \
+docker create \
   --name collectd\
   -e "SF_API_TOKEN=XXXXXXXXXXXXXXXXXXXXXX" \
   -v /etc/hostname:/mnt/hostname:ro \
@@ -100,15 +108,15 @@ sudo docker create \
   
   
 # Auto Start
-sudo wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/collectd.service -O /lib/systemd/system/collectd.service
+wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/collectd.service -O /lib/systemd/system/collectd.service
 
 # Enable Service
-sudo systemctl enable collectd.service
+systemctl enable collectd.service
 
 # Graphite Install - Docker - Ubuntu 16.04
 
 # Create Graphite Container
-sudo docker run -d\
+docker run -d\
  --name graphite\
  --restart=always\
  -p 80:80\
@@ -119,13 +127,13 @@ sudo docker run -d\
  hopsoft/graphite-statsd
  
 # Auto Start
-sudo wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/graphite.service -O /lib/systemd/system/graphite.service
+wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/graphite.service -O /lib/systemd/system/graphite.service
 
 # Enable Service
-sudo systemctl enable graphite.service
+systemctl enable graphite.service
 
 # Restart Announcment
 echo Restarting VM
 
 # Restart
-sudo reboot
+reboot
