@@ -79,7 +79,7 @@ IFS='.' read -ra kmemarr <<< "$kmemline"
         echo "Memory Used: $pcent%"
 
 
-        curl -i -XPOST 'http://INFLUXDBIP:8086/write?db=home' --data-binary "esxi_stats,host=esxi3,type=memory_usage value=$pcent"
+        curl -i -XPOST 'http://INFLUXDBIP:8086/write?db=home' --data-binary "esxi_stats,host=esxi,type=memory_usage value=$pcent"
 
 
         #Wait for a bit before checking again
