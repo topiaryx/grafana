@@ -6,7 +6,7 @@
 # Checking for Root Permissions 
 check_your_privilege () {
     if [[ "$(id -u)" != 0 ]]; then
-        echo "E: Requires root permissions" > /dev/stderr
+        echo "Error: This setup script requires root permissions." > /dev/stderr
         exit 1
     fi
 }
