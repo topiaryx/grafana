@@ -30,9 +30,6 @@ apt-cache policy docker-engine
 # Install Docker
 apt-get install -y docker-engine
 
-# Remove the need to user Sudo before docker. This generally requires you to log out and log back in, which is why we restart at the end of the script.
-usermod -aG docker $(whoami)
-
 # Grafana Install - Docker - Ubuntu 16.04
 
 # Create Persistent Storage
@@ -132,7 +129,13 @@ wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requir
 # Enable Service
 systemctl enable graphite.service
 
-# Restart Announcment
+# Logging out of Root
+logout
+
+# Remove the need to user Sudo before docker. This generally requires you to log out and log back in, which is why we restart at the end of the script.
+usermod -aG docker $(whoami)
+
+# Restart Announcment for previous command
 echo Restarting VM
 
 # Restart
