@@ -137,7 +137,7 @@ apt-get install snmp snmp-mibs-downloader
 exit
 
 # Remove the need to user Sudo before docker. This generally requires you to log out and log back in, which is why we restart at the end of the script.
-usermod -aG docker $(whoami)
+sudo usermod -aG docker $(whoami)
 
 # Restart Announcment for previous command
 echo Restarting VM
