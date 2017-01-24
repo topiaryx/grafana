@@ -129,6 +129,10 @@ wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requir
 # Enable Service
 systemctl enable graphite.service
 
+# Install other dependencies
+apt-get install sshpass
+apt-get install snmp snmp-mibs-downloader
+
 # Logging out of Root
 logout
 
