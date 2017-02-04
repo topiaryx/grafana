@@ -4,17 +4,16 @@
 #It gets all CPU Cores via ssh and then passes the count to a while loop meaning no multiple lines per CPU
 #Memory is collected via ESXCFG-Info --Hardware
 
-#Modified by /u/imaspecialorder & /u/dantho & /u/DXM765 & /u/just_insane
+#Modified by /u/imaspecialorder & /u/dantho & /u/DXM765 & /u/just_insane & /u/tylerhammer
+
+#Config File Location
+. esxi.cfg
 
 #The time we are going to sleep between readings
-sleeptime=120
-
-#Variables
-ESXiIP=XXX.XXX.XXX.XXX #ESXi IP ADDRESS
-ESXiPass=XXXXX #ESXi Root Password
+sleeptime=$INTERVAL
 
 #Get the Core Count via SSH
-corecount=$(sshpass -f /path/to/password/file ssh -oStrictHostKeyChecking=no -t USER@ESXiIP "grep -c ^processor /proc/cpuinfo" 2> /dev/null)
+corecount=$(sshpass -p $PASSWORD ssh -oStrictHostKeyChecking=no -t $USERNAME@$ESXIP "grep -c ^processor /proc/cpuinfo" 2> /dev/null)
 corecount=$(echo $corecount | sed 's/\r$//')
 
 
@@ -30,15 +29,15 @@ do
         while [ $i -lt $corecount ];
         do
                 let i=i+1
-                CPUs[$i]="$(snmpget -v 2c -c Public ESXi-IP HOST-RESOURCES-MIB::hrProcessorLoad."$i" -Ov)"
+                CPUs[$i]="$(snmpget -v 2c -c Public $ESXIP HOST-RESOURCES-MIB::hrProcessorLoad."$i" -Ov)"
                 CPUs[$i]="$(echo "${CPUs["$i"]}" | cut -c 10-)"
                 echo "CPU"$i": ${CPUs["$i"]}%"
-                curl -i -XPOST 'http://INFLUXDBIP:8086/write?db=home' --data-binary "esxi_stats,host=esxi,type=cpu_usage,cpu_number=$i value=${CPUs[$i]}"
+                curl -i -XPOST "http://$INFLUXIP/write?db=$DATABASE" --data-binary "esxi_stats,host=esxi3,type=cpu_usage,cpu_number=$i value=${CPUs[$i]}"
         done
                 i=0
 
 
-        hwinfo=$(sshpass -f /path/to/password/file ssh -oStrictHostKeyChecking=no -t USER@ESXiIP "esxcfg-info --hardware")
+        hwinfo=$(sshpass -p $PASSWORD ssh -oStrictHostKeyChecking=no -t $USERNAME@$ESXIP "esxcfg-info --hardware")
 
         #Lets try to find the lines we are looking for
         while read -r line; do
@@ -79,8 +78,7 @@ IFS='.' read -ra kmemarr <<< "$kmemline"
         echo "Memory Used: $pcent%"
 
 
-        curl -i -XPOST 'http://INFLUXDBIP:8086/write?db=home' --data-binary "esxi_stats,host=esxi,type=memory_usage value=$pcent"
-
+        curl -i -XPOST "http://$INFLUXIP/write?db=$DATABASE" --data-binary "esxi_stats,host=esxi3,type=memory_usage value=$pcent"
 
         #Wait for a bit before checking again
         sleep "$sleeptime"
