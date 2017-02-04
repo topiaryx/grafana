@@ -32,7 +32,7 @@ do
                 CPUs[$i]="$(snmpget -v 2c -c Public $ESXIP HOST-RESOURCES-MIB::hrProcessorLoad."$i" -Ov)"
                 CPUs[$i]="$(echo "${CPUs["$i"]}" | cut -c 10-)"
                 echo "CPU"$i": ${CPUs["$i"]}%"
-                curl -i -XPOST "http://$INFLUXIP/write?db=$DATABASE" --data-binary "esxi_stats,host=esxi3,type=cpu_usage,cpu_number=$i value=${CPUs[$i]}"
+                curl -i -XPOST "http://$INFLUXIP/write?db=$DATABASE" --data-binary "esxi_stats,host=$HOST,type=cpu_usage,cpu_number=$i value=${CPUs[$i]}"
         done
                 i=0
 
@@ -78,7 +78,7 @@ IFS='.' read -ra kmemarr <<< "$kmemline"
         echo "Memory Used: $pcent%"
 
 
-        curl -i -XPOST "http://$INFLUXIP/write?db=$DATABASE" --data-binary "esxi_stats,host=esxi3,type=memory_usage value=$pcent"
+        curl -i -XPOST "http://$INFLUXIP/write?db=$DATABASE" --data-binary "esxi_stats,host=$HOST,type=memory_usage value=$pcent"
 
         #Wait for a bit before checking again
         sleep "$sleeptime"
