@@ -9,9 +9,6 @@
 #Config File Location
 . esxi.cfg
 
-#The time we are going to sleep between readings
-sleeptime=$INTERVAL
-
 #Get the Core Count via SSH
 corecount=$(sshpass -p $PASSWORD ssh -oStrictHostKeyChecking=no -t $USERNAME@$ESXIP "grep -c ^processor /proc/cpuinfo" 2> /dev/null)
 corecount=$(echo $corecount | sed 's/\r$//')
@@ -81,6 +78,6 @@ IFS='.' read -ra kmemarr <<< "$kmemline"
         curl -i -XPOST "http://$INFLUXIP/write?db=$DATABASE" --data-binary "esxi_stats,host=$HOST,type=memory_usage value=$pcent"
 
         #Wait for a bit before checking again
-        sleep "$sleeptime"
+        sleep "$INTERVAL"
 
 done                                  
