@@ -137,6 +137,9 @@ wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requir
 # Enable Service
 systemctl enable graphite.service
 
+# Enable InfluxDB WebUI
+sed -i '40s/.*/  enabled = true/' /docker/containers/influxdb/conf/influxdb.conf
+
 # Install other dependencies
 apt-get install sshpass
 apt-get install snmp snmp-mibs-downloader

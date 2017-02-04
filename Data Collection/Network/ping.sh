@@ -1,20 +1,7 @@
 #!/bin/bash
 
-#The time we are going to sleep between readings
-sleeptime=60
-
-#Google DNS is a good choice for host and it's anycasted to
-#a nearby server.  You may want to modify this though based
-#on your location
-host="8.8.8.8"
-
-#How many pings are we going to send
-number="20"
-
-#How long are we going to wait between pings
-#Keep in mind only superusers (root) can use a time 
-#value of 200ms or less!!
-wait="0.25"
+# Config File Location
+. ping.cfg
 
 #Prepare to start the loop and warn the user
 echo "Press [CTRL+C] to stop..."
@@ -22,7 +9,7 @@ while :
 do
 
 	#Lets ping the host!
-	results=$(ping -c $number -i $wait -q $host)
+	results=$(ping -c $PINGS-i $WAIT -q $HOST)
 
 	#We need to get ONLY lines 4 and 5 from the results
 	#The rest isn't needed for ourpurposes
@@ -60,13 +47,13 @@ do
 	mdev=${numbersarray[3]}
 
 	#Write the data to the database
-	curl -i -XPOST 'http://INFLUXDBIP:8086/write?db=home' --data-binary "ping,host=8.8.8.8,measurement=loss value=$lossnumber"
-	curl -i -XPOST 'http://INFLUXDBIP:8086/write?db=home' --data-binary "ping,host=8.8.8.8,measurement=min value=$min"
-	curl -i -XPOST 'http://INFLUXDBIP:8086/write?db=home' --data-binary "ping,host=8.8.8.8,measurement=avg value=$avg"
-	curl -i -XPOST 'http://INFLUXDBIP:8086/write?db=home' --data-binary "ping,host=8.8.8.8,measurement=max value=$max"
-	curl -i -XPOST 'http://INFLUXDBIP:8086/write?db=home' --data-binary "ping,host=8.8.8.8,measurement=mdev value=$mdev"
+	curl -i -XPOST "http://$INFLUXIP/write?db=$DATABASE" --data-binary "ping,host=$HOST,measurement=loss value=$lossnumber"
+	curl -i -XPOST "http://$INFLUXIP/write?db=$DATABASE" --data-binary "ping,host=$HOST,measurement=min value=$min"
+	curl -i -XPOST "http://$INFLUXIP/write?db=$DATABASE" --data-binary "ping,host=$HOST,measurement=avg value=$avg"
+	curl -i -XPOST "http://$INFLUXIP/write?db=$DATABASE" --data-binary "ping,host=$HOST,measurement=max value=$max"
+	curl -i -XPOST "http://$INFLUXIP/write?db=$DATABASE" --data-binary "ping,host=$HOST,measurement=mdev value=$mdev"
 	
 	#Wait for a bit before checking again
-	sleep "$sleeptime"
+	sleep "$INTERVAL"
 	
 done

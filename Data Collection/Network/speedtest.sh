@@ -1,12 +1,14 @@
 #!/bin/bash
 
-#NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE
-#NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE
-#NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE
-#This script requires speedtest-cli to function!!!!!!!!!!!!!!!!!!!!!!!
+# Checking for speedtest-cli dependency and installing if missing
+if [ $(dpkg-query -W -f='${Status}' speedtest-cli 2>/dev/null | grep -c "ok installed") -eq 0 ];
+then
+ sudo  apt-get install -y speedtest-cli;
+fi
 
-#The time we are going to sleep between readings
-sleeptime=3600
+
+# Config File Location
+. speedtest.cfg
 
 #Prepare to start the loop and warn the user
 echo "Press [CTRL+C] to stop..."
@@ -58,11 +60,11 @@ do
 	echo "$upload"
 	
 	#Write to the database
-	curl -i -XPOST 'http://INFLUXDBIP:8086/write?db=home' --data-binary "speedtest,metric=ping value=$ping"
-	curl -i -XPOST 'http://INFLUXDBIP:8086/write?db=home' --data-binary "speedtest,metric=download value=$download"
-	curl -i -XPOST 'http://INFLUXDBIP:8086/write?db=home' --data-binary "speedtest,metric=upload value=$upload"
+	curl -i -XPOST "http://$INFLUXIP/write?db=$DATABASE" --data-binary "speedtest,metric=ping value=$ping"
+	curl -i -XPOST "http://$INFLUXIP/write?db=$DATABASE" --data-binary "speedtest,metric=download value=$download"
+	curl -i -XPOST "http://$INFLUXIP/write?db=$DATABASE" --data-binary "speedtest,metric=upload value=$upload"
 
 	#Wait for a bit before checking again
-	sleep "$sleeptime"
+	sleep "$INTERVAL"
 	
 done
