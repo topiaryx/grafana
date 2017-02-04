@@ -15,7 +15,15 @@ check_your_privilege
 # Docker Installation for Ubuntu 16.04
 
 # Update Package Database
-apt-get update
+while true; do
+    read -p "Do you wish to run system updates?: " yn
+    case $yn in
+        [yY] | [yY][Ee][Ss] ) echo "Okay, Update time!";  sudo apt-get -y update && sudo apt-get -y upgrade; break;; #(Run both in one line)
+        [nN] | [n|N][O|o] ) echo "Fine no updates"; break;;  #Boring people don't update
+        * ) echo "Please answer yes or no.";;  #Error handling to get the right answer
+    esac
+done
+echo "Moving onto other fun stuff"  #Continue with the script
 
 # Add GPG Key for Docker Repo
 apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
