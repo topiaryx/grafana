@@ -5,8 +5,8 @@ After=influxdb.service
 
 [Service]
 Type=simple
-User=root
-ExecStart=/bin/bash -x /home/hammer/scripts/esxi/esxi.sh
+User=<username>
+ExecStart=/bin/bash -x /home/<username>/scripts/esxi/esxi.sh
 
 [Install]
 WantedBy=default.target
