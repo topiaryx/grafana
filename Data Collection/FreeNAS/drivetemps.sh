@@ -8,7 +8,7 @@
 #Needed for sshpass to connect using -f password , as password is the file name
 
 # Configuration File Location
-. drivetemps.cfg
+. ~/scripts/freenas/drivetemps.cfg
 
 #Prepare to start the loop and warn the user
 echo "Press [CTRL+C] to stop..."

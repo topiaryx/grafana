@@ -5,7 +5,7 @@
 ##This script MUST be placed into /root/scripts/ and named hdd_temp.sh , if the folder does not exist, CREATE IT
 
 # Configuration File Location
-. hdd_temp.cfg
+. ~/scripts/hdd_temp.cfg
 
  ###### summary ######
 ### Disks ###
