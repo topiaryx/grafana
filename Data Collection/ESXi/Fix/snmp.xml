@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<config>
+<snmpSettings>
+<enable>true</enable>
+<port>161</port>
+<syscontact></syscontact>
+<syslocation></syslocation>
+<EnvEventSource>indications</EnvEventSource>
+<communities>public</communities>
+<loglevel>info</loglevel>
+<authProtocol></authProtocol>
+<privProtocol></privProtocol>
+</snmpSettings>
+</config>
