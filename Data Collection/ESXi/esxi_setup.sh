@@ -48,7 +48,7 @@ read INFLUXIP
 
 echo
 
-echo -n "What is the name of the database you'd like your stats saved in? Remember this choice, we'll hvae to create a database with this name. = "
+echo -n "What is the name of the database you'd like your stats saved in? If the database does not exist, it will be automatically created. = "
 read DATABASE
 
 echo
@@ -108,6 +108,9 @@ sed -i "10i . "$DIR"esxi.cfg" $DIR"esxi.sh"
 
 # Set Chmod
 chmod +x $DIR"esxi.sh"
+
+# Create DATABASE
+curl -i -XPOST "http://$INFLUXIP/query" --data-urlencode "q=CREATE DATABASE $DATABASE" >/dev/null
 
 # Create SystemD file
 sudo bash -c "cat >/lib/systemd/system/esximon.service" << EOF
