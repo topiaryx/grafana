@@ -7,11 +7,7 @@
 #Modified by /u/imaspecialorder & /u/dantho & /u/DXM765 & /u/just_insane & /u/tylerhammer
 
 #Config File Location
-<<<<<<< HEAD
-. ~/scripts/esxi/esxi.cfg
-=======
 
->>>>>>> master
 
 #Get the Core Count via SSH
 corecount=$(sshpass -p $PASSWORD ssh -oStrictHostKeyChecking=no -t $ROOT@$ESXIP "grep -c ^processor /proc/cpuinfo" 2> /dev/null)
