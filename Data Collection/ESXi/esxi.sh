@@ -7,10 +7,14 @@
 #Modified by /u/imaspecialorder & /u/dantho & /u/DXM765 & /u/just_insane & /u/tylerhammer
 
 #Config File Location
+<<<<<<< HEAD
 . ~/scripts/esxi/esxi.cfg
+=======
+
+>>>>>>> master
 
 #Get the Core Count via SSH
-corecount=$(sshpass -p $PASSWORD ssh -oStrictHostKeyChecking=no -t $USERNAME@$ESXIP "grep -c ^processor /proc/cpuinfo" 2> /dev/null)
+corecount=$(sshpass -p $PASSWORD ssh -oStrictHostKeyChecking=no -t $ROOT@$ESXIP "grep -c ^processor /proc/cpuinfo" 2> /dev/null)
 corecount=$(echo $corecount | sed 's/\r$//')
 
 
@@ -34,7 +38,7 @@ do
                 i=0
 
 
-        hwinfo=$(sshpass -p $PASSWORD ssh -oStrictHostKeyChecking=no -t $USERNAME@$ESXIP "esxcfg-info --hardware")
+        hwinfo=$(sshpass -p $PASSWORD ssh -oStrictHostKeyChecking=no -t $ROOT@$ESXIP "esxcfg-info --hardware")
 
         #Lets try to find the lines we are looking for
         while read -r line; do
@@ -80,4 +84,4 @@ IFS='.' read -ra kmemarr <<< "$kmemline"
         #Wait for a bit before checking again
         sleep "$INTERVAL"
 
-done                                  
+done

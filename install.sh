@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# This script will install Docker, Grafana, InfluxDB, Graphite & CollectD. It will also add systemd service files to ensure auto startup each boot. 
-# This script was created by reddit user /u/tyler_hammer. This is a combination of several guides with edits to make it as easy as possible for new people to start. 
+# This script will install Docker, Grafana, InfluxDB, Graphite & CollectD. It will also add systemd service files to ensure auto startup each boot.
+# This script was created by reddit user /u/tyler_hammer. This is a combination of several guides with edits to make it as easy as possible for new people to start.
 
 # Checking for Root Permissions # Thanks to Github User "codygarver" for the recommendation
 check_your_privilege () {
@@ -110,8 +110,8 @@ docker create \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v /etc:/mnt/etc:ro \
   quay.io/signalfuse/collectd
-  
-  
+
+
 # Auto Start
 wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/collectd.service -O /lib/systemd/system/collectd.service
 
@@ -130,7 +130,7 @@ docker run -d\
  -p 8125:8125/udp\
  -p 8126:8126\
  hopsoft/graphite-statsd
- 
+
 # Auto Start
 wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/graphite.service -O /lib/systemd/system/graphite.service
 
