@@ -29,7 +29,7 @@ read -p "> " HOST
 echo
 
 echo -e "\e[7mWhat is the IP of your FreeNAS host? \e[0m"
-read -p "> " ESXIP
+read -p "> " FREENASIP
 
 echo
 
@@ -56,6 +56,9 @@ echo
 
 echo -e "\e[7mHow often would you like the script to poll your ESXi host? (In seconds) \e[0m"
 read -p "> " INTERVAL
+
+echo -e "\e[7mWhich drives do you want to monitor? (Seperate drives with a space) \e[0m"
+read -p "> " DRIVES
 
 clear
 
@@ -93,24 +96,24 @@ INTERVAL=${INTERVAL}
 EOF
 
 # Download drivetemps.sh
-echo -e "\e[36mDownloading Drive Temps script file. \e[0m"
+echo -e "\e[36mDownloading Drive Temps script file \e[0m"
 wget -O $DIR"drivetemps.sh" https://raw.githubusercontent.com/tylerhammer/grafana/master/Data%20Collection/FreeNAS/drivetemps.sh >/dev/null 2>&1
 
 # Update drivetemps.sh with config file.
-echo -e "\e[36mConnecting Configuration file and Drive Temps script. \e[0m"
+echo -e "\e[36mConnecting Configuration file and Drive Temps script \e[0m"
 sed -i "4i . "$DIR"drivetemps.cfg" $DIR"drivetemps.sh" >/dev/null 2>&1
 
 # Set Chmod
-echo -e "\e[36mUpdating permissions. \e[0m"
+echo -e "\e[36mUpdating permissions \e[0m"
 chmod +x $DIR"drivetemps.sh"
 
 # Create DATABASE
-echo -e "\e[36mCreating database in InfluxDB. \e[0m"
+echo -e "\e[36mCreating database in InfluxDB \e[0m"
 curl -i -XPOST "http://$INFLUXIP/query" --data-urlencode "q=CREATE DATABASE $DATABASE" >/dev/null 2>&1
 
 # Create SystemD file
-echo -e "\e[36mCreating SystemD file.\e[0m"
-sudo bash -c "cat >/lib/systemd/system/driveteps.service" << EOF >/dev/null 2>&1
+echo -e "\e[36mCreating SystemD file \e[0m"
+sudo bash -c "cat >/lib/systemd/system/driveteps.service" <<EOF >/dev/null 2>&1
 [Unit]
 Description=Drive Temps
 Requires=influxdb.service
@@ -127,27 +130,22 @@ EOF
 
 
 # SSH into host
-echo -e "\e[36mAccessing FreeNAS host.\e[0m"
-sshpass -p ${PASSWORD} ssh ${ROOT}@${ESXIP} << EOF
+echo -e "\e[36mAccessing FreeNAS host\e[0m"
+sshpass -p ${PASSWORD} ssh ${ROOT}@${FREENASIP} <<EOF
 
 
 # Create Directory
-echo "Creating required directory."
-mkdir -p "/root/scripts/"
-
-clear
-
-# Gather Drive Data
-echo -e "\e[7mWhich drives do you want to monitor? (Seperate drives with a space) \e[0m"
-read -p "> " DRIVES
+echo "Creating required directory"
+mkdir -p /root/scripts/
+cd /root/scripts/
 
 # Downloading hdd_temp.sh
-echo -e "\e[36mDownloading HDD Temp script file. \e[0m"
-wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Data%20Collection/FreeNAS/hdd_temp.sh
+echo "Downloading HDD Temp script file"
+wget -O /root/scripts/hdd_temp.sh https://raw.githubusercontent.com/tylerhammer/grafana/master/Data%20Collection/FreeNAS/hdd_temp.sh
 
 # Generate Config File
-echo -e "\e[36mGenerating HDD Temp Configuration File \e[0m"
-cat >/root/scripts/hdd_temp.cfg<<DOF >/dev/null 2>&1
+echo "Generating HDD Temp Configuration File"
+cat >/root/scripts/hdd_temp.cfg<<DOF
 ########################################
 #                                      #
 # Configuration File for drivetemps.sh #
@@ -169,17 +167,15 @@ Host=${HOST}
 DRIVES=${DRIVES}
 DOF
 
-# Update drivetemps.sh with config file.
-echo -e "\e[36mConnecting Configuration file and HDD Temps script. \e[0m"
-sed -i "4i . "/root/scripts/hdd_temp.cfg" "/root/scripts/hdd_temp.sh" >/dev/null 2>&1
-
 # Set Chmod
-echo -e "\e[36mUpdating permissions. \e[0m"
-chmod +x /root/scriptshdd_temps.sh
+echo "Updating permissions"
+chmod +x /root/scripts/hdd_temp.sh
 
 exit
 
 EOF
+
+echo -e "\e[36mDisconnecting from FreeNAS host \e[0m"
 
 # Enable SystemD service
 echo -e "\e[36mEnabling Services \e[0m"
