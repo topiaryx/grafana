@@ -15,6 +15,9 @@ echo
 echo -n "Press any key to continue"
 read -rsn1
 
+echo
+echo
+
 echo -e "\e[7mWhere would you like the script and config files place? Please us the full path. (Example: /home/$USER/scripts/freenas/) \e[0m"
 read -p "> " DIR
 
@@ -38,11 +41,18 @@ echo
 echo -e "\e[7mWhat is the root password for your FreeNAS host? \e[0m"
 read -p "> " -s PASSWORD
 
+echo
+echo
+
 echo -e "\e[7mWhat is the complete IP of your InfluxDB? Must include the port. InfluxDB's default port is 8086.  (Example: 10.10.10.100:8086) \e[0m"
 read -p "> " INFLUXIP
 
+echo
+
 echo -e "\e[7mWhat is the name of the database you'd like to use? If the database does not exist, it will be automatically created. \e[0m"
 read -p "> " DATABASE
+
+echo
 
 echo -e "\e[7mHow often would you like the script to poll your ESXi host? (In seconds) \e[0m"
 read -p "> " INTERVAL
