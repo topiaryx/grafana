@@ -104,7 +104,7 @@ INTERVAL=${INTERVAL}
 EOF
 
 # Download ESXi.sh
-cho -e "\e[36mDownloading ESXi script file. \e[0m"
+echo -e "\e[36mDownloading ESXi script file. \e[0m"
 wget -O $DIR"esxi.sh" https://raw.githubusercontent.com/tylerhammer/grafana/master/Data%20Collection/ESXi/esxi.sh >/dev/null 2>&1
 
 # Update ESXi.sh with config file.
