@@ -6,7 +6,7 @@ USER=$(whoami)
 
 # Collect Information
 
-echo -e "\e[7mWelcome to the installation script for ESXi CPU and Memory collection. This script will ask for some data and create all the necessary files to get you up and running! \e[0m"
+echo -e "\e[7mWelcome to the setup script for ESXi CPU and Memory collection. This script will ask for some data and create all the necessary files to get you up and running! \e[0m"
 
 echo
 echo
@@ -87,7 +87,7 @@ HOST=${HOST}
 ESXIP=${ESXIP}
 
 # ESXi Root Username
-USERNAME=${ROOT}
+ROOT=${ROOT}
 
 # ESXI Root Password
 PASSWORD=${PASSWORD}
