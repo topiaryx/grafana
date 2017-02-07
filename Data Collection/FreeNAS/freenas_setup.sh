@@ -94,7 +94,7 @@ EOF
 
 # Download drivetemps.sh
 echo -e "\e[36mDownloading Drive Temps script file. \e[0m"
-wget -O $DIR"esxi.sh" https://raw.githubusercontent.com/tylerhammer/grafana/master/Data%20Collection/FreeNAS/drivetemps.sh >/dev/null 2>&1
+wget -O $DIR"drivetemps.sh" https://raw.githubusercontent.com/tylerhammer/grafana/master/Data%20Collection/FreeNAS/drivetemps.sh >/dev/null 2>&1
 
 # Update drivetemps.sh with config file.
 echo -e "\e[36mConnecting Configuration file and Drive Temps script. \e[0m"
