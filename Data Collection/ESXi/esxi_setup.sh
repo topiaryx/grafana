@@ -6,7 +6,7 @@ USER=$(whoami)
 
 # Collect Information
 
-echo -n "Welcome to the installation script for ESXi CPU and Memory collection. This script will ask for some data and create all the necessary files to get you up and running!"
+echo -e "\e[7mWelcome to the installation script for ESXi CPU and Memory collection. This script will ask for some data and create all the necessary files to get you up and running! \e[0m"
 
 echo
 echo
@@ -17,44 +17,44 @@ read -rsn1
 echo
 echo
 
-echo -n "Where would you like the script and config files place? Please us the full path. Example: /home/$USER/scripts/esxi/ = "
-read DIR
+echo -e "\e[7mWhere would you like the script and config files place? Please us the full path. (Example: /home/$USER/scripts/esxi/) \e[0m"
+read -p "> " DIR
 
 echo
 
-echo -n "What is the name of your ESXi host? This will be whatever you want it to appear as in Grafana = "
-read HOST
+echo -e "\e[7mWhat is the name of your ESXi host? This is what your host will be displayed as in Grafana. \e[0m"
+read -p "> " HOST
 
 echo
 
-echo -n "What is the ip of your ESXi host? = "
-read ESXIP
+echo -e "\e[7mWhat is the IP of your ESXi host? \e[0m"
+read -p "> " ESXIP
 
 echo
 
-echo -n "What is the root username for your ESXi host? = "
-read ROOT
+echo -e "\e[7mWhat is the root username for your ESXi host? \e[0m"
+read -p "> " ROOT
 
 echo
 
-echo -n "What is the root password for your ESXi host? = "
-read -s PASSWORD
+echo -e "\e[7mWhat is the root password for your ESXi host? \e[0m"
+read -p "> " -s PASSWORD
 
 echo
 echo
 
-echo -n "What is the IP of your InfluxDB? Make sure to include your port. The default port of InfluxDB is 8086. Example: 10.10.10.100:8086  = "
-read INFLUXIP
+echo -e "\e[7mWhat is the complete IP of your InfluxDB? Must include the port. InfluxDB's default port is 8086.  (Example: 10.10.10.100:8086) \e[0m"
+read -p "> " INFLUXIP
 
 echo
 
-echo -n "What is the name of the database you'd like your stats saved in? If the database does not exist, it will be automatically created. = "
-read DATABASE
+echo -e "\e[7mWhat is the name of the database you'd like to use? If the database does not exist, it will be automatically created. \e[0m"
+read -p "> " DATABASE
 
 echo
 
-echo -n "How often would you like the script to poll your ESXi host? (In seconds) = "
-read INTERVAL
+echo -e "\e[7mHow often would you like the script to poll your ESXi host? (In seconds) \e[0m"
+read -p "> " INTERVAL
 
 
 
