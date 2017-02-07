@@ -132,10 +132,8 @@ sshpass -p ${PASSWORD} ssh ${ROOT}@${ESXIP} << EOF
 
 
 # Create Directory
-echo -e "\e[36mCreating required directory.\e[0m"
-if [ ! -d "/root/scripts/" ]; then
-  mkdir -p "/root/scripts/"
-fi >/dev/null 2>&1
+echo "Creating required directory."
+mkdir -p "/root/scripts/"
 
 clear
 
