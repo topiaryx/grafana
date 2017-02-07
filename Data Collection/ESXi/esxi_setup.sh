@@ -141,6 +141,7 @@ echo -e "\e[36mEnabling Services \e[0m"
 systemctl enable esximon.service >/dev/null 2>&1
 systemctl start esximon.service >/dev/null 2>&1
 
+clear
 
 # Finishing thoughts
 echo "Congradulations, the ESXi setup script has successfully completed and you should start seeing data in Influx."
