@@ -144,6 +144,7 @@ systemctl start esximon.service >/dev/null 2>&1
 clear
 
 # Finishing thoughts
-echo "Congradulations, the ESXi setup script has successfully completed and you should start seeing data in Influx."
-echo "If you're running into an issue where you're getting a missing feild value error, please check out cyanlab.io for a posted fix."
-echo "Should you have any other questions or suggestions, please reach out to me at git@tylerhammer.com or on Discord Hammer#4341."
+echo -e "\e[7mCongradulations, the ESXi setup script has successfully completed and you should start seeing data in Influx. \e[0m"
+echo -e "\e[7mIf you're running into an issue where you're getting a missing feild value error, please check out cyanlab.io for a posted fix. \e[0m"
+echo -e "\e[7mShould you have any other questions or suggestions, please reach out to me at git@tylerhammer.com or on Discord Hammer#4341. \e[0m"
+echo
