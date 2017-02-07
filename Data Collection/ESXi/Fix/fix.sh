@@ -79,5 +79,5 @@ EOF
 clear
 
 echo -e "\e[7mThe fix should now be applied, and you should be able to restart your esxi script. \e[0m"
-echo -e "\e[7mIf you're still having trouble please reach out to me git@tylerhammer.com or on Discord Hammer#4341. \e[0m"
+echo -e "\e[7mIf you're still having trouble please reach out to me at git@tylerhammer.com or on Discord Hammer#4341. \e[0m"
 echo 
