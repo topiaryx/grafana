@@ -59,16 +59,19 @@ read INTERVAL
 
 
 # Ensure directory exists
+echo -e "\e[36mVerifying Directory Status \e[0m"
 
 if [ ! -d "$DIR" ]; then
   mkdir -p "$DIR"
-fi
+fi >/dev/null 2>&1
 
 
 
 # Create ESXi config file
+echo -e "\e[36mCreating Configuration File \e[0m"
 
-cat >$DIR"esxi.cfg"<<EOF
+
+cat >$DIR"esxi.cfg"<<EOF >/dev/null 2>&1
 #####################################
 #                                   #
 # Configuration File for ESXi.sh    #
@@ -101,19 +104,24 @@ INTERVAL=${INTERVAL}
 EOF
 
 # Download ESXi.sh
-wget -O $DIR"esxi.sh" https://raw.githubusercontent.com/tylerhammer/grafana/master/Data%20Collection/ESXi/esxi.sh
+cho -e "\e[36mDownloading ESXi script file. \e[0m"
+wget -O $DIR"esxi.sh" https://raw.githubusercontent.com/tylerhammer/grafana/master/Data%20Collection/ESXi/esxi.sh >/dev/null 2>&1
 
 # Update ESXi.sh with config file.
-sed -i "10i . "$DIR"esxi.cfg" $DIR"esxi.sh"
+echo -e "\e[36mConnecting Configuration file and ESXi script. \e[0m"
+sed -i "10i . "$DIR"esxi.cfg" $DIR"esxi.sh" >/dev/null 2>&1
 
 # Set Chmod
+echo -e "\e[36mUpdating permissions. \e[0m"
 chmod +x $DIR"esxi.sh"
 
 # Create DATABASE
-curl -i -XPOST "http://$INFLUXIP/query" --data-urlencode "q=CREATE DATABASE $DATABASE" >/dev/null
+echo -e "\e[36mCreating database in InfluxDB. \e[0m"
+curl -i -XPOST "http://$INFLUXIP/query" --data-urlencode "q=CREATE DATABASE $DATABASE" >/dev/null 2>&1
 
 # Create SystemD file
-sudo bash -c "cat >/lib/systemd/system/esximon.service" << EOF
+echo -e "\e[36mCreating SystemD file.\e[0m"
+sudo bash -c "cat >/lib/systemd/system/esximon.service" << EOF >/dev/null 2>&1
 [Unit]
 Description=ESXi Stats
 Requires=influxdb.service
@@ -129,13 +137,12 @@ WantedBy=default.target
 EOF
 
 # Enable SystemD service
-systemctl enable esximon.service
-systemctl start esximon.service
+echo -e "\e[36mEnabling Services \e[0m"
+systemctl enable esximon.service >/dev/null 2>&1
+systemctl start esximon.service >/dev/null 2>&1
 
 
 # Finishing thoughts
-echo -n Congradulations, the ESXi setup script has successfully completed and you should start seeing data in Influx.
-echo
-echo -n If you're running into an issue where you're getting a missing feild value error, please check out cyanlab.io for a posted fix.
-echo
-echo -n Should you have any other questions or suggestions, please reach out to me at git@tylerhammer.com or on Discord Hammer#4341.
+echo "Congradulations, the ESXi setup script has successfully completed and you should start seeing data in Influx."
+echo "If you're running into an issue where you're getting a missing feild value error, please check out cyanlab.io for a posted fix."
+echo "Should you have any other questions or suggestions, please reach out to me at git@tylerhammer.com or on Discord Hammer#4341."
