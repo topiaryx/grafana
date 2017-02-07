@@ -56,7 +56,7 @@ echo
 echo -e "\e[7mHow often would you like the script to poll your ESXi host? (In seconds) \e[0m"
 read -p "> " INTERVAL
 
-
+clear
 
 # Ensure directory exists
 echo -e "\e[36mVerifying Directory Status \e[0m"
