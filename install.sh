@@ -145,7 +145,7 @@ apt-get install sshpass
 apt-get install snmp snmp-mibs-downloader
 
 # Logging out of Root
-exit
+logout
 
 # Remove the need to user Sudo before docker. This generally requires you to log out and log back in, which is why we restart at the end of the script.
 sudo usermod -aG docker $(whoami)
