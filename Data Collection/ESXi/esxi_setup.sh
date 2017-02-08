@@ -7,6 +7,7 @@ USER=$(whoami)
 # Collect Information
 
 echo -e "\e[7mWelcome to the setup script for ESXi CPU and Memory collection. This script will ask for some data and create all the necessary files to get you up and running! \e[0m"
+echo -e "\e[7mNote: Please do not run this script as sudo. Proper directory permissions should be set up prior to this script being run. If you're running it as sudo, please Control+C to exit now."
 
 echo
 echo
@@ -71,7 +72,7 @@ fi >/dev/null 2>&1
 echo -e "\e[36mCreating Configuration File \e[0m"
 
 
-cat >$DIR"esxi.cfg"<<EOF >/dev/null 2>&1
+cat >$DIR"esxi.cfg"<<EOF
 #####################################
 #                                   #
 # Configuration File for ESXi.sh    #
@@ -121,7 +122,7 @@ curl -i -XPOST "http://$INFLUXIP/query" --data-urlencode "q=CREATE DATABASE $DAT
 
 # Create SystemD file
 echo -e "\e[36mCreating SystemD file.\e[0m"
-sudo bash -c "cat >/lib/systemd/system/esximon.service" << EOF >/dev/null 2>&1
+sudo bash -c "cat >/lib/systemd/system/esximon.service" << EOF
 [Unit]
 Description=ESXi Stats
 Requires=influxdb.service
