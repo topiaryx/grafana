@@ -64,7 +64,7 @@ echo -e "\e[36mVerifying Directory Status \e[0m"
 
 if [ ! -d "$DIR" ]; then
   mkdir -p "$DIR"
-fi >/dev/null 2>&1
+fi >/dev/null 2>esxi_setup.log
 
 
 
@@ -106,11 +106,11 @@ EOF
 
 # Download ESXi.sh
 echo -e "\e[36mDownloading ESXi script file. \e[0m"
-wget -O $DIR"esxi.sh" https://raw.githubusercontent.com/tylerhammer/grafana/master/Data%20Collection/ESXi/esxi.sh >/dev/null 2>&1
+wget -O $DIR"esxi.sh" https://raw.githubusercontent.com/tylerhammer/grafana/master/Data%20Collection/ESXi/esxi.sh >/dev/null 2>>esxi_setup.log
 
 # Update ESXi.sh with config file.
 echo -e "\e[36mConnecting Configuration file and ESXi script. \e[0m"
-sed -i "10i . "$DIR"esxi.cfg" $DIR"esxi.sh" >/dev/null 2>&1
+sed -i "10i . "$DIR"esxi.cfg" $DIR"esxi.sh" >/dev/null 2>>esxi_setup.log
 
 # Set Chmod
 echo -e "\e[36mUpdating permissions. \e[0m"
@@ -118,7 +118,7 @@ chmod +x $DIR"esxi.sh"
 
 # Create DATABASE
 echo -e "\e[36mCreating database in InfluxDB. \e[0m"
-curl -i -XPOST "http://$INFLUXIP/query" --data-urlencode "q=CREATE DATABASE $DATABASE" >/dev/null 2>&1
+curl -i -XPOST "http://$INFLUXIP/query" --data-urlencode "q=CREATE DATABASE $DATABASE" >/dev/null 2>>esxi_setup.log
 
 # Create SystemD file
 echo -e "\e[36mCreating SystemD file.\e[0m"
@@ -139,8 +139,8 @@ EOF
 
 # Enable SystemD service
 echo -e "\e[36mEnabling Services \e[0m"
-systemctl enable esximon.service >/dev/null 2>&1
-systemctl start esximon.service >/dev/null 2>&1
+systemctl enable esximon.service >/dev/null 2>>esxi_setup.log
+systemctl start esximon.service >/dev/null 2>>esxi_setup.log
 
 clear
 
