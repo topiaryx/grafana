@@ -24,7 +24,11 @@ while true; do
         * ) echo -e "\e[7mPlease answer y or n.\e[0m ";;  #Error handling to get the right answer
     esac
 done
-echo -e "\r\033[K\e[36mUpdating System ----- Complete\e[0m"  #Continue with the script
+
+if [["$yn" == "y*"]]
+  then echo -e "\r\033[K\e[36mUpdating System ----- Complete\e[0m"  #Continue with the script
+  else echo
+fi
 
 # Add GPG Key for Docker Repo
 echo -ne "\e[36mAdding GPG Key for Docker Repo\e[0m"
