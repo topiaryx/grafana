@@ -19,10 +19,10 @@ while true; do
     echo -n -e "\e[7mDo you wish to run system updates? [y/n]:\e[0m "
     read yn
     case $yn in
-        [yY] | [yY][Ee][Ss] ) echo "Okay, Update time!";  sudo apt-get -y update && sudo apt-get -y upgrade; break;; #(Run both in one line)
-        [nN] | [n|N][O|o] ) echo "Fine no updates"; break;;  #Boring people don't update
-        * ) echo "Please answer yes or no.";;  #Error handling to get the right answer
-    esac >/dev/null 2>>install.log
+        [yY] | [yY][Ee][Ss] ) echo -e "\e[36mUpdating System - This may take awhile!\e[0m";  sudo apt-get -y update >/dev/null 2>>install.log && sudo apt-get -y upgrade >/dev/null 2>>install.log; break;; #(Run both in one line)
+        [nN] | [n|N][O|o] ) echo -e "\e[36mSkipping Updates\e[0m"; break;;  #Boring people don't update
+        * ) echo -e "\e[7mPlease answer y or n.\e[0m ";;  #Error handling to get the right answer
+    esac
 done
 echo -e "\e[36mContinuing with script \e[0m"  #Continue with the script
 
@@ -69,7 +69,7 @@ mkdir ~/updates >>/dev/null 2>>install.log
 
 # Download Grafana Update Script
 echo -e "\e[36mDownloading Grafana update script \e[0m"
-wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/grafanaupdate.sh -O ~/bin/updategrafana.sh >>/dev/null 2>>install.log
+wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Update%20Scripts/grafanaupdate.sh -O ~/updates/updategrafana.sh >>/dev/null 2>>install.log
 
 # Create Auto Start Service
 echo -e "\e[36mCreating Grafana SystemD file\e[0m"
@@ -125,7 +125,7 @@ docker start influxdb >>/dev/null 2>>install.log
 
 # Create Influx Update Script
 echo -e "\e[36mDownloading InfluxDB update script \e[0m"
-wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/influxdbupdate.sh -O ~/bin/influxupdate.sh >>/dev/null 2>>install.log
+wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Update%20Scripts/influxdbupdate.sh -O ~/updates/influxupdate.sh >>/dev/null 2>>install.log
 
 # Setup Auto Start
 echo -e "\e[36mCreating InfluxDB SystemD file\e[0m"
