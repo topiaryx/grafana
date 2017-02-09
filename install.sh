@@ -20,12 +20,12 @@ while true; do
     read yn
     case $yn in
         [yY] | [yY][Ee][Ss] ) echo -ne "\e[36mUpdating System - This may take awhile!\e[0m";  sudo apt-get -y update >/dev/null 2>>install.log && sudo apt-get -y upgrade >/dev/null 2>>install.log; break;; #(Run both in one line)
-        [nN] | [n|N][O|o] ) echo -ne "\e[36mSkipping Updates\e[0m"; break;;  #Boring people don't update
+        [nN] | [n|N][O|o] ) echo -e "\e[36mSkipping Updates\e[0m"; break;;  #Boring people don't update
         * ) echo -e "\e[7mPlease answer y or n.\e[0m ";;  #Error handling to get the right answer
     esac
 done
 
-if [["$(yn)" == "y*"]]
+if [["${yn}" = y]]
   then echo -e "\r\033[K\e[36mUpdating System ----- Complete\e[0m"  #Continue with the script
   else echo
 fi

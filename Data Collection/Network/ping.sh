@@ -9,7 +9,7 @@ while :
 do
 
 	#Lets ping the host!
-	results=$(ping -c $PINGS-i $WAIT -q $HOST)
+	results=$(ping -c $PINGS -i $WAIT -q $HOST)
 
 	#We need to get ONLY lines 4 and 5 from the results
 	#The rest isn't needed for ourpurposes
@@ -52,7 +52,7 @@ do
 	curl -i -XPOST "http://$INFLUXIP/write?db=$DATABASE" --data-binary "ping,host=$HOST,measurement=avg value=$avg"
 	curl -i -XPOST "http://$INFLUXIP/write?db=$DATABASE" --data-binary "ping,host=$HOST,measurement=max value=$max"
 	curl -i -XPOST "http://$INFLUXIP/write?db=$DATABASE" --data-binary "ping,host=$HOST,measurement=mdev value=$mdev"
-	
+
 	#Wait for a bit before checking again
 	sleep "$INTERVAL"
 	
