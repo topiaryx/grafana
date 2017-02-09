@@ -65,15 +65,51 @@ docker start grafana >>/dev/null 2>>install.log
 
 # Make Bin folder for update scripts
 echo -e "\e[36mCreating Update Folder \e[0m"
-mkdir ~/bin >>/dev/null 2>>install.log
+mkdir ~/updates >>/dev/null 2>>install.log
 
 # Download Grafana Update Script
-echo -e "\e[36mDownloading Grafana update script \e[0m"
-wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/grafanaupdate.sh -O ~/bin/updategrafana.sh >>/dev/null 2>>install.log
+echo -e "\e[36mCreating Grafana update script \e[0m"
+sudo bash -c "cat >~/updates/grafanaupdate.sh" << EOF
+#!/bin/bash
+# Define a timestamp function
+timestamp() {
+  date +"%Y-%m-%d_%H-%M-%S"
+}
+timestamp
+echo "Pulling Latest from grafana/grafana"
+docker pull grafana/grafana
+echo "Stopping grafana Container"
+docker stop grafana
+echo "Backing up old grafana Container to grafana_$(timestamp)"
+docker rename grafana grafana_$(timestamp)
+echo "Creating and starting new grafana Server"
+docker create \
+--name=grafana \
+-p 3000:3000 \
+--volumes-from grafana-storage \
+-e "GF_SECURITY_ADMIN_PASSWORD=hunter2" \
+grafana/grafana
+docker start grafana
+EOF
 
 # Create Auto Start Service
-echo -e "\e[36mDownloading Grafana SystemD service \e[0m"
-wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/grafana.service -O /lib/systemd/system/grafana.service >>/dev/null 2>>install.log
+echo -e "\e[36mCreating Grafana SystemD file\e[0m"
+sudo bash -c "cat >/lib/systemd/system/grafana.service" << EOF
+[Unit]
+ Description=grafana container
+ Requires=docker.service
+ After=docker.service
+
+[Service]
+ User=root
+ Restart=on-failure
+ RestartSec=45
+ ExecStart=/usr/bin/docker start -a grafana
+ ExecStop=/usr/bin/docker stop -t 2 grafana
+
+[Install]
+ WantedBy=multi-user.target
+EOF
 
 # Enable Grafana Service
 echo -e "\e[36mEnabling Grafana service \e[0m"
@@ -109,12 +145,48 @@ echo -e "\e[36mStarting InfluxDB \e[0m"
 docker start influxdb >>/dev/null 2>>install.log
 
 # Create Influx Update Script
-echo -e "\e[36mDownloading InfluxDB update script \e[0m"
-wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/influxdbupdate.sh -O ~/bin/influxupdate.sh >>/dev/null 2>>install.log
+echo -e "\e[36mCreating InfluxDB update script \e[0m"
+sudo bash -c "cat >~/updates/grafanaupdate.sh" << EOF
+#!/bin/bash
+# Define a timestamp function
+timestamp() {
+  date +"%Y-%m-%d_%H-%M-%S"
+}
+timestamp
+echo "Pulling Latest from influxdb"
+docker pull influxdb
+echo "Stopping influxdb Container"
+docker stop influxdb
+echo "Backing up old influxdb Container to influxdb_$(timestamp)"
+docker rename influxdb influxdb_$(timestamp)
+echo "Creating and starting new influxdb Server"
+docker create \
+--name influxdb \
+-e PUID=1000 -e PGID=1000 \
+-p 8083:8083 -p 8086:8086 \
+-v /docker/containers/influxdb/conf/influxdb.conf:/etc/influxdb/influxdb.conf:ro \
+-v /docker/containers/influxdb/db:/var/lib/influxdb \
+influxdb -config /etc/influxdb/influxdb.conf
+EOF
 
 # Setup Auto Start
-echo -e "\e[36mDownloading InfluxDB SystemD file \e[0m"
-wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/influxdb.service -O /lib/systemd/system/influxdb.service >>/dev/null 2>>install.log
+echo -e "\e[36mCreating InfluxDB SystemD file\e[0m"
+sudo bash -c "cat >/lib/systemd/system/influxdb.service" << EOF
+[Unit]
+ Description=influxdb container
+ Requires=docker.service
+ After=docker.service
+
+[Service]
+ User=root
+ Restart=on-failure
+ RestartSec=45
+ ExecStart=/usr/bin/docker start -a influxdb
+ ExecStop=/usr/bin/docker stop -t 2 influxdb
+
+[Install]
+ WantedBy=multi-user.target
+EOF
 
 # Enable Service
 echo -e "\e[36mEnabling InfluxDB Service \e[0m"
@@ -135,8 +207,23 @@ docker create \
 
 
 # Auto Start
-echo -e "\e[36mDownloading CollectD SystemD file \e[0m"
-wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/collectd.service -O /lib/systemd/system/collectd.service >>/dev/null 2>>install.log
+echo -e "\e[36mCreating CollectD SystemD file\e[0m"
+sudo bash -c "cat >/lib/systemd/system/influxdb.service" << EOF
+[Unit]
+ Description=Collectd container
+ Requires=docker.service
+ After=docker.service
+
+[Service]
+ User=root
+ Restart=on-failure
+ RestartSec=45
+ ExecStart=/usr/bin/docker start -a collectd
+ ExecStop=/usr/bin/docker stop -t 2 collectd
+
+[Install]
+ WantedBy=multi-user.target
+EOF
 
 # Enable Service
 echo -e "\e[36mEnabling CollectD Service \e[0m"
@@ -157,8 +244,23 @@ docker run -d\
  hopsoft/graphite-statsd >>/dev/null 2>>install.log
 
 # Auto Start
-echo -e "\e[36mDownloading Graphite SystemD file \e[0m"
-wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/graphite.service -O /lib/systemd/system/graphite.service >>/dev/null 2>>install.log
+echo -e "\e[36mCreating Graphite SystemD file\e[0m"
+sudo bash -c "cat >/lib/systemd/system/influxdb.service" << EOF
+[Unit]
+ Description=Graphite container
+ Requires=docker.service
+ After=docker.service
+
+[Service]
+ User=root
+ Restart=on-failure
+ RestartSec=45
+ ExecStart=/usr/bin/docker start -a graphite
+ ExecStop=/usr/bin/docker stop -t 2 graphite
+
+[Install]
+ WantedBy=multi-user.target
+EOF
 
 # Enable Service
 echo -e "\e[36mEnabling Graphite Service \e[0m"
