@@ -68,29 +68,8 @@ echo -e "\e[36mCreating Update Folder \e[0m"
 mkdir ~/updates >>/dev/null 2>>install.log
 
 # Download Grafana Update Script
-echo -e "\e[36mCreating Grafana update script \e[0m"
-sudo bash -c "cat >~/updates/grafanaupdate.sh" << EOF
-#!/bin/bash
-# Define a timestamp function
-timestamp() {
-  date +"%Y-%m-%d_%H-%M-%S"
-}
-timestamp
-echo "Pulling Latest from grafana/grafana"
-docker pull grafana/grafana
-echo "Stopping grafana Container"
-docker stop grafana
-echo "Backing up old grafana Container to grafana_$(timestamp)"
-docker rename grafana grafana_$(timestamp)
-echo "Creating and starting new grafana Server"
-docker create \
---name=grafana \
--p 3000:3000 \
---volumes-from grafana-storage \
--e "GF_SECURITY_ADMIN_PASSWORD=hunter2" \
-grafana/grafana
-docker start grafana
-EOF
+echo -e "\e[36mDownloading Grafana update script \e[0m"
+wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/grafanaupdate.sh -O ~/bin/updategrafana.sh >>/dev/null 2>>install.log
 
 # Create Auto Start Service
 echo -e "\e[36mCreating Grafana SystemD file\e[0m"
@@ -145,33 +124,12 @@ echo -e "\e[36mStarting InfluxDB \e[0m"
 docker start influxdb >>/dev/null 2>>install.log
 
 # Create Influx Update Script
-echo -e "\e[36mCreating InfluxDB update script \e[0m"
-sudo bash -c "cat >~/updates/grafanaupdate.sh" << EOF
-#!/bin/bash
-# Define a timestamp function
-timestamp() {
-  date +"%Y-%m-%d_%H-%M-%S"
-}
-timestamp
-echo "Pulling Latest from influxdb"
-docker pull influxdb
-echo "Stopping influxdb Container"
-docker stop influxdb
-echo "Backing up old influxdb Container to influxdb_$(timestamp)"
-docker rename influxdb influxdb_$(timestamp)
-echo "Creating and starting new influxdb Server"
-docker create \
---name influxdb \
--e PUID=1000 -e PGID=1000 \
--p 8083:8083 -p 8086:8086 \
--v /docker/containers/influxdb/conf/influxdb.conf:/etc/influxdb/influxdb.conf:ro \
--v /docker/containers/influxdb/db:/var/lib/influxdb \
-influxdb -config /etc/influxdb/influxdb.conf
-EOF
+echo -e "\e[36mDownloading InfluxDB update script \e[0m"
+wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Setup%20Requirements/influxdbupdate.sh -O ~/bin/influxupdate.sh >>/dev/null 2>>install.log
 
 # Setup Auto Start
 echo -e "\e[36mCreating InfluxDB SystemD file\e[0m"
-sudo bash -c "cat >/lib/systemd/system/influxdb.service" << EOF
+sudo bash -c "cat >/lib/systemd/system/influxdb.service" << EOF  2>>install.log
 [Unit]
  Description=influxdb container
  Requires=docker.service
