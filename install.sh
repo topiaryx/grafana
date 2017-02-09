@@ -33,9 +33,9 @@ echo "deb https://apt.dockerproject.org/repo ubuntu-xenial main" | sudo tee /etc
 echo -e "\r\033[K\e[36mAdding GPG Key for Docker Repo ----- Complete\e[0m"
 
 # Update Database
-echo -e "\e[36mUpdating Database \e[0m"
+echo -ne "\e[36mUpdating Database \e[0m"
 apt-get update >>/dev/null 2>>install.log
-echo -ne "\r\033[K\e[36mUpdating Database ----- Complete\e[0m"
+echo -e "\r\033[K\e[36mUpdating Database ----- Complete\e[0m"
 
 # Verify Repo
 echo -ne "\e[36mVerifying Repo \e[0m"
