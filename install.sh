@@ -182,7 +182,7 @@ echo -e "\r\033[K\e[36mCreating CollectD docker container ----- Complete\e[0m"
 
 # Auto Start
 echo -ne "\e[36mCreating CollectD SystemD file\e[0m"
-sudo bash -c "cat >/lib/systemd/system/influxdb.service" << EOF
+sudo bash -c "cat >/lib/systemd/system/collectd.service" << EOF
 [Unit]
  Description=Collectd container
  Requires=docker.service
@@ -222,7 +222,7 @@ echo -e "\r\033[K\e[36mCreating Graphite docker container ----- Complete\e[0m"
 
 # Auto Start
 echo -ne "\e[36mCreating Graphite SystemD file\e[0m"
-sudo bash -c "cat >/lib/systemd/system/influxdb.service" << EOF
+sudo bash -c "cat >/lib/systemd/system/graphite.service" << EOF
 [Unit]
  Description=Graphite container
  Requires=docker.service
