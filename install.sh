@@ -6,7 +6,7 @@
 # Checking for Root Permissions # Thanks to Github User "codygarver" for the recommendation
 check_your_privilege () {
     if [[ "$(id -u)" != 0 ]]; then
-        echo -e "Error: This setup script requires root permissions. Please run the script as root." > /dev/stderr
+        echo -e "\e[91mError: This setup script requires root permissions. Please run the script as root.\e[0m" > /dev/stderr
         exit 1
     fi
 }
@@ -25,7 +25,7 @@ while true; do
     esac
 done
 
-if [["$yn" == "y*"]]
+if [["$(yn)" == "y*"]]
   then echo -e "\r\033[K\e[36mUpdating System ----- Complete\e[0m"  #Continue with the script
   else echo
 fi
