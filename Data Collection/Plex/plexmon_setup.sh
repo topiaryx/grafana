@@ -111,7 +111,7 @@ echo -e "\r\033[k\e[36mDownloading collection script ----- Complete"
 
 # Updating Collection Script
 echo -ne "\e[36mUpdating collection script\e[0m"
-sed -i "601s|.*|parser.add_argument('--config', default='${DIR}config.ini', dest='config', help='Specify a custom location for the config file')|" ${DIR}"plexInfluxdbCollector.py" >/dev/null 2>>plexmon_setup.log
+sed -i "601s|.*|    parser.add_argument('--config', default='${DIR}config.ini', dest='config', help='Specify a custom location for the config file')|" ${DIR}"plexInfluxdbCollector.py" >/dev/null 2>>plexmon_setup.log
 echo -e "\r\033[k\e[36mUpdating collection script ----- Complete"
 
 # Create service
@@ -125,7 +125,7 @@ After=influxdb.service
 [Service]
 Type=idle
 User=${USER}
-ExecStart=/usr/bin/python3 ${DIR}"plexInfluxdbCollector.py"
+ExecStart=/usr/bin/python3 ${DIR}plexInfluxdbCollector.py
 
 [Install]
 WantedBy=default.target
@@ -137,4 +137,4 @@ sudo systemctl enable plexmon.service >/dev/null 2>>plexmon_setup.log
 sudo systemctl start plexmon.service >/dev/null 2>>plexmon_setup.log
 echo -e "\r\033[K\e[36mEnabling Services ----- Complete\e[0m"
 
-echo -e "\e[7mShould be complete now\e[0m"
+echo -e "\e[7mSetup has completed. Head on over to Grafana and import the dashboard example, and you're all set!\e[0m"
