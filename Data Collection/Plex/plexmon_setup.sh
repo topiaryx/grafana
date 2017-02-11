@@ -78,7 +78,7 @@ echo -e "\r\033[K\e[36mChecking for Python3-pip ----- Complete"
 # Install Python Dependencies
 echo -ne "\e[36mDownloading Python Dependencies\e[0m"
 pip3 install -r https://raw.githubusercontent.com/barrycarey/Plex-Data-Collector-For-InfluxDB/master/requirements.txt >/dev/null 2>>plexmon_setup.log
-echo -ne "\r\033[K\e[36mDownloading Python Dependencies ----- Complete\e[0m"
+echo -e "\r\033[K\e[36mDownloading Python Dependencies ----- Complete\e[0m"
 
 #Download and edit Config file
 echo -ne "\e[36mCreating Config file \e[0m"
@@ -96,7 +96,7 @@ sed -i "15s/.*/Password =${PLEXPW}/" ${DIR}"config.ini" >/dev/null 2>>plexmon_se
 # Add PLEXSERVERS
 sed -i "18s/.*/Servers =${PLEXSERVER}/" ${DIR}"config.ini" >/dev/null 2>>plexmon_setup.log
 # Add OUTPUT
-sed -i "24s/.*/LogFile = ${DIR}output.log /" ${DIR}"config.ini" >/dev/null 2>>plexmon_setup.log
+sed -i "24s|.*|LogFile = ${DIR}output.log |" ${DIR}"config.ini" >/dev/null 2>>plexmon_setup.log
 echo -e "\r\033[K\e[36mCreating Config file ----- Complete\e[0m"
 
 # Create DATABASE
@@ -106,12 +106,12 @@ echo -e "\r\033[K\e[36mCreating database in InfluxDB ----- Complete\e[0m"
 
 # Download Collection Script
 echo -ne "\e[36mDownloading collection script\e[0m"
-wget -O ${DIR}"plexInfluxdbCollector.py" https://raw.githubusercontent.com/barrycarey/Plex-Data-Collector-For-InfluxDB/master/plexInfluxdbCollector.py
+wget -O ${DIR}"plexInfluxdbCollector.py" https://raw.githubusercontent.com/barrycarey/Plex-Data-Collector-For-InfluxDB/master/plexInfluxdbCollector.py >/dev/null 2>>plexmon_setup.log
 echo -e "\r\033[k\e[36mDownloading collection script ----- Complete"
 
 # Updating Collection Script
 echo -ne "\e[36mUpdating collection script\e[0m"
-sed -i "601s/.*/parser.add_argument('--config', default='${DIR}config.ini', dest='config', help='Specify a custom location for the config file')/" ${DIR}"config.ini" >/dev/null 2>>plexmon_setup.log
+sed -i "601s|.*|parser.add_argument('--config', default='${DIR}config.ini', dest='config', help='Specify a custom location for the config file')|" ${DIR}"plexInfluxdbCollector.py" >/dev/null 2>>plexmon_setup.log
 echo -e "\r\033[k\e[36mUpdating collection script ----- Complete"
 
 # Create service
@@ -133,10 +133,8 @@ EOF
 echo -e "\r\033[k\e[36mCreating service file ----- Complete\e[0m"
 
 echo -ne "\e[36mEnabling Services\e[0m"
-systemctl enable plexmon.service >/dev/null 2>>plexmon_setup.log
-systemctl start plexmon.service >/dev/null 2>>plexmon_setup.log
+sudo systemctl enable plexmon.service >/dev/null 2>>plexmon_setup.log
+sudo systemctl start plexmon.service >/dev/null 2>>plexmon_setup.log
 echo -e "\r\033[K\e[36mEnabling Services ----- Complete\e[0m"
 
-clear
-
-echo "Should be complete now"
+echo -e "\e[7mShould be complete now\e[0m"

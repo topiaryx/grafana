@@ -4,6 +4,8 @@
 # Determine which user is logged in
 USER=$(logname)
 
+clear
+
 # Collect Information
 
 echo -e "\e[7mWelcome to the setup script for ESXi CPU and Memory collection. This script will ask for some data and create all the necessary files to get you up and running! \e[0m"
@@ -142,9 +144,9 @@ echo -e "\r\033[K\e[36mCreating SystemD file ----- Complete\e[0m"
 
 # Enable SystemD service
 echo -ne "\e[36mEnabling Services\e[0m"
-systemctl enable esximon.service >/dev/null 2>>esxi_setup.log
-systemctl start esximon.service >/dev/null 2>>esxi_setup.log
-echo -ne "\r\033[K\e[36mEnabling Services ----- Complete\e[0m"
+sudo systemctl enable esximon.service >/dev/null 2>>esxi_setup.log
+sudo systemctl start esximon.service >/dev/null 2>>esxi_setup.log
+echo -e "\r\033[K\e[36mEnabling Services ----- Complete\e[0m"
 
 clear
 
