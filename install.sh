@@ -14,6 +14,8 @@ check_your_privilege
 
 # Docker Installation for Ubuntu 16.04
 
+clear
+
 # Update Package Database
 while true; do
     echo -n -e "\e[7mDo you wish to run system updates? [y/n]:\e[0m "

@@ -61,17 +61,17 @@ echo -e "\r\033[K\e[36mVerifying Directory Status ----- Complete\e[0m"
 
 # Install Python3
 echo -ne "\e[36mChecking for Python3\e[0m"
-if [ $(dpkg-query -W -f='${Status}' python3 2>/dev/null | grep -c "ok installed") -eq 0 ]; >/dev/null 2>>plexmon_setup.log
+if [ $(dpkg-query -W -f='${Status}' python3 2>/dev/null | grep -c "ok installed") -eq 0 ];
 then
-  apt-get install -y python3;
+  sudo apt-get install -y python3 >/dev/null 2>>plexmon_setup.log;
 fi
 echo -e "\r\033[K\e[36mChecking for Python3 ----- Complete"
 
 # Install Python3-pip
 echo -ne "\e[36mChecking for Python3-pip\e[0m"
-if [ $(dpkg-query -W -f='${Status}' python3-pip 2>/dev/null | grep -c "ok installed") -eq 0 ]; >/dev/null 2>>plexmon_setup.log
+if [ $(dpkg-query -W -f='${Status}' python3-pip 2>/dev/null | grep -c "ok installed") -eq 0 ];
 then
-  apt-get install -y python3-pip;
+  sudo apt-get install -y python3-pip >/dev/null 2>>plexmon_setup.log;
 fi
 echo -e "\r\033[K\e[36mChecking for Python3-pip ----- Complete"
 
@@ -101,7 +101,7 @@ echo -e "\r\033[K\e[36mCreating Config file ----- Complete\e[0m"
 
 # Create DATABASE
 echo -ne "\e[36mCreating database in InfluxDB. \e[0m"
-curl -i -XPOST "http://$INFLUXDBIP:$INFLUXDBPORT/query" --data-urlencode "q=CREATE DATABASE $DATABASE" >/dev/null 2>>esxi_setup.log
+curl -i -XPOST "http://$INFLUXDBIP:$INFLUXDBPORT/query" --data-urlencode "q=CREATE DATABASE $DATABASE" >/dev/null 2>>plexmon_setup.log
 echo -e "\r\033[K\e[36mCreating database in InfluxDB ----- Complete\e[0m"
 
 # Download Collection Script
@@ -133,8 +133,8 @@ EOF
 echo -e "\r\033[k\e[36mCreating service file ----- Complete\e[0m"
 
 echo -ne "\e[36mEnabling Services\e[0m"
-systemctl enable esximon.service >/dev/null 2>>esxi_setup.log
-systemctl start esximon.service >/dev/null 2>>esxi_setup.log
+systemctl enable plexmon.service >/dev/null 2>>plexmon_setup.log
+systemctl start plexmon.service >/dev/null 2>>plexmon_setup.log
 echo -e "\r\033[K\e[36mEnabling Services ----- Complete\e[0m"
 
 clear
