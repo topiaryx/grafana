@@ -34,7 +34,7 @@ curl -LO https://download.nextcloud.com/server/releases/latest.tar.bz2
 
 sudo tar -C /var/www -xvjf /tmp/latest.tar.bz2
 
-wget
+wget https://raw.githubusercontent.com/tylerhammer/grafana/development/nextcloud.sh
 
 bash /tmp/nextcloud.sh
 
