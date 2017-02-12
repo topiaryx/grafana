@@ -7,10 +7,11 @@ check_your_privilege () {
         exit 1
     fi
 }
+check_your_privilege
 
 clear
 
-ech -e "\e[7mThank you for choosing to install NextCloud. The installation will first Install a LAMP Stack, followed by the installation of NextCloud. \e[0m"
+echo -e "\e[7mThank you for choosing to install NextCloud. The installation will first Install a LAMP Stack, followed by the installation of NextCloud. \e[0m"
 
 echo
 echo
@@ -47,12 +48,22 @@ echo -ne "\e[36mRestarting Apache2\e[0m"
 systemctl restart apache2 >/dev/null 2>>lamp.log
 echo -e "\r\033[K\e[36mRestarting Apache2 ----- Complete\e[0m"
 
+echo
+
+echo -e "\e[7mWhat is your root Mysql Password??\e[0m"
+read -p "> " -s MYSQLPASS
+
+echo
+
 echo -ne "\e[36mInstalling MySQL\e[0m"
+debconf-set-selections <<< "mysql-server mysql-server/root_password password ${MYSQLPASS}"
+debconf-set-selections <<< "mysql-server mysql-server/root_password_again password ${MYSQLPASS}"
 apt-get install -y mysql-server >/dev/null 2>>lamp.log
 echo -e "\r\033[K\e[36mInstalling MySQL ----- Complete\e[0m"
 
 echo -ne "\e[36mSetting up MySQL\e[0m"
 mysql_secure_installation << EOF >/dev/null 2>>lamp.log
+${MYSQLPASS}
 n
 n
 y
@@ -133,9 +144,6 @@ echo -e "\r\033[K\e[36mInstalling PHP Dependencies for NextCloud ----- Complete\
 echo -ne "\e[36mRestarting Apache2\e[0m"
 systemctl restart apache2 >/dev/null 2>>lamp.log
 echo -e "\r\033[K\e[36mRestarting Apache2 ----- Complete\e[0m"
-
-echo -e "\e[7mWhat is your root Mysql Password??\e[0m"
-read -p "> " -s MYSQLPASS
 
 mysql -u root -p"${MYSQLPASS}" -e "CREATE DATABASE nextcloud" >/dev/null 2>>lamp.log
 mysql -u root -p"${MYSQLPASS}" -e "GRANT ALL ON nextcloud.* to 'nextcloud'@'localhost' IDENTIFIED BY "${MYSQLPASS}"" >/dev/null 2>>lamp.log
