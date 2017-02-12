@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Configuration File Location
-. hdd_temp.cfg
+
 
  ###### summary ######
 ### Disks ###
