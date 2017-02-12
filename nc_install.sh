@@ -54,6 +54,7 @@ echo -e "\e[7mWhat is your root Mysql Password??\e[0m"
 read -p "> " -s MYSQLPASS
 
 echo
+echo
 
 echo -ne "\e[36mInstalling MySQL\e[0m"
 debconf-set-selections <<< "mysql-server mysql-server/root_password password ${MYSQLPASS}"
@@ -62,8 +63,7 @@ apt-get install -y mysql-server >/dev/null 2>>lamp.log
 echo -e "\r\033[K\e[36mInstalling MySQL ----- Complete\e[0m"
 
 echo -ne "\e[36mSetting up MySQL\e[0m"
-mysql_secure_installation << EOF >/dev/null 2>>lamp.log
-${MYSQLPASS}
+mysql_secure_installation -u root -p"${MYSQLPASS}" << EOF >/dev/null 2>>lamp.log
 n
 n
 y
