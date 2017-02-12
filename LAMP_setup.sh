@@ -1,8 +1,8 @@
 #!/bin/bash
 
-apt-get update
+apt-get -y update
 
-apt-get install apache2
+apt-get install -y apache2
 
 echo -e "\e[7mWhat is your public IP?\e[0m"
 read -p "> " PUBIP
@@ -11,7 +11,7 @@ sed -i "222s/.*/ServerName ${PUBIP}/" /etc/apache2/apache2.conf >/dev/null 2>>la
 
 systemctl restart apache2
 
-apt-get install mysql-server
+apt-get install -y mysql-server
 
 mysql_secure_installation << EOF
 n
@@ -22,7 +22,7 @@ y
 y
 EOF
 
-apt-get install php libapache2-mod-php php-mcrypt php-mysql
+apt-get install -y php libapache2-mod-php php-mcrypt php-mysql
 
 sed -i "2s/.*/    DirectoryIndex index.html index.cgi index.pl index.php index.xhtml index.htm/" /etc/apache2/mods-enabled/dir.conf >/dev/null 2>>lamp.log
 
@@ -61,7 +61,7 @@ a2enmod rewrite
 
 apt-get update
 
-apt-get install  php-bz2 php-curl php-gd php-imagick php-intl php-mbstring php-xml php-zip
+apt-get install -y php-bz2 php-curl php-gd php-imagick php-intl php-mbstring php-xml php-zip
 
 systemctl reload apache2
 
