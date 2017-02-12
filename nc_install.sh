@@ -1,5 +1,5 @@
 #!/bin/bash
-# LAMP Install + NextCloud install
+# LAMP Stack + NextCloud install
 
 check_your_privilege () {
     if [[ "$(id -u)" != 0 ]]; then
