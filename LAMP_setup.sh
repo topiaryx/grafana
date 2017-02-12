@@ -24,7 +24,7 @@ EOF
 
 apt-get install -y php libapache2-mod-php php-mcrypt php-mysql
 
-sed -i "2s/.*/    DirectoryIndex index.html index.cgi index.pl index.php index.xhtml index.htm/" /etc/apache2/mods-enabled/dir.conf >/dev/null 2>>lamp.log
+sed -i "2s/.*/    DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm/" /etc/apache2/mods-enabled/dir.conf >/dev/null 2>>lamp.log
 
 sudo systemctl restart apache2
 
