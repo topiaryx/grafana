@@ -146,5 +146,5 @@ systemctl restart apache2 >/dev/null 2>>lamp.log
 echo -e "\r\033[K\e[36mRestarting Apache2 ----- Complete\e[0m"
 
 mysql -u root -p"${MYSQLPASS}" -e "CREATE DATABASE nextcloud" >/dev/null 2>>lamp.log
-mysql -u root -p"${MYSQLPASS}" -e "GRANT ALL ON nextcloud.* to 'nextcloud'@'localhost' IDENTIFIED BY "${MYSQLPASS}"" >/dev/null 2>>lamp.log
+mysql -u root -p"${MYSQLPASS}" -e "GRANT ALL ON nextcloud.* to 'nextcloud'@'localhost' IDENTIFIED BY ${MYSQLPASS}" >/dev/null 2>>lamp.log
 mysql -u root -p"${MYSQLPASS}" -e "FLUSH PRIVILEGES" >/dev/null 2>>lamp.log
