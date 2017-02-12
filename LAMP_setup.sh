@@ -68,6 +68,6 @@ systemctl reload apache2
 echo -e "\e[7mWhat is your root Mysql Password??\e[0m"
 read -p "> " -s MYSQLPASS
 
-mysql -u root -p'${MYSQLPASS}' -e "CREATE DATABASE nextcloud"
-mysql -u root -p'${MYSQLPASS}' -e "GRANT ALL ON nextcloud.* to 'nextcloud'@'localhost' IDENTIFIED BY '${MYSQLPASS}'"
-mysql -u root -p'${MYSQLPASS}' -e "FLUSH PRIVILEGES"
+mysql -u root -p"${MYSQLPASS}" -e "CREATE DATABASE nextcloud"
+mysql -u root -p"${MYSQLPASS}" -e "GRANT ALL ON nextcloud.* to 'nextcloud'@'localhost' IDENTIFIED BY '${MYSQLPASS}'"
+mysql -u root -p"${MYSQLPASS}" -e "FLUSH PRIVILEGES"
