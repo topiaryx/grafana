@@ -6,8 +6,9 @@ USER=$(whoami)
 
 # Collect Information
 
-echo -e "\e[7mWelcome to the setup script for ESXi CPU and Memory collection. This script will ask for some data and create all the necessary files to get you up and running! \e[0m"
-echo -e "\e[7mNote: Please do not run this script as sudo. Proper directory permissions should be set up prior to this script being run. If you're running it as sudo, please Control+C to exit now."
+echo -e "\e[7mWelcome to the setup script for ESXi CPU and Memory collection. This script will ask for some data and create all the necessary files to get you up and running!\e[0m"
+echo -e "\e[7mPlease do not run this script as sudo. Proper directory permissions should be set up prior to this script being run. If you're running it as sudo, please Control+C to exit now.\e[0m"
+echo -e "\e[7mSSH and SNMP are required to be enabled on your ESXi host. Please enable them BEFORE you continue with this script.\e[0m"
 
 echo
 echo
