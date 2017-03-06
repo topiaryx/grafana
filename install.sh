@@ -55,13 +55,41 @@ echo -ne "\e[36mCreating persistent storage for Grafana\e[0m"
 docker run -d -v /var/lib/grafana --name grafana-storage busybox:latest >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mCreating persistent storage for Grafana ----- Complete\e[0m"
 
+echo
+
+echo - "\e[7mPlease specificy an admin password for Grafana\e[0m"
+read -p "> " -s GADMINPW
+
+echo
+echo
+
+echo - "\e[7mPlease re-enter the password\e[0m"
+read -p "> " -s GADMINPW2
+
+echo
+echo
+
+while [ "${GADMINPW}" != "${GADMINPW}" ];
+do
+    echo
+    echo -e "\e[41mPasswords do not match, please try again!\e[0m"
+    echo
+    echo -e "\e[7mPlease enter a password for the MySQL Root User!\e[0m"
+    read -p "> " -s GADMINPW
+    echo
+    echo
+    echo -e "\e[7mPlease re-enter a password for the MySQL Root User!\e[0m"
+    read -p "> " -s GADMINPW2
+    echo
+done
+
 # Create Grafana Docker
 echo -ne "\e[36mCreating Grafana docker container - This make take awhile!\e[0m"
 sudo docker create \
 --name=grafana \
 -p 3000:3000 \
 --volumes-from grafana-storage \
--e "GF_SECURITY_ADMIN_PASSWORD=hunter2" \
+-e "GF_SECURITY_ADMIN_PASSWORD=${GADMINPW}" \
 grafana/grafana >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mCreating Grafana docker container ----- Complete\e[0m"
 
