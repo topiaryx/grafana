@@ -57,28 +57,28 @@ echo -e "\r\033[K\e[36mCreating persistent storage for Grafana ----- Complete\e[
 
 echo
 
-echo - "\e[7mPlease specificy an admin password for Grafana\e[0m"
+echo -e "\e[7mPlease specify an admin password for Grafana\e[0m"
 read -p "> " -s GADMINPW
 
 echo
 echo
 
-echo - "\e[7mPlease re-enter the password\e[0m"
+echo -e "\e[7mPlease re-enter the password\e[0m"
 read -p "> " -s GADMINPW2
 
 echo
 echo
 
-while [ "${GADMINPW}" != "${GADMINPW}" ];
+while [ "${GADMINPW}" != "${GADMINPW2}" ];
 do
     echo
     echo -e "\e[41mPasswords do not match, please try again!\e[0m"
     echo
-    echo -e "\e[7mPlease enter a password for the MySQL Root User!\e[0m"
+    echo -e "\e[7mPlease specify an admin password for Grafana\e[0m"
     read -p "> " -s GADMINPW
     echo
     echo
-    echo -e "\e[7mPlease re-enter a password for the MySQL Root User!\e[0m"
+    echo -e "\e[7mPlease re-enter the password\e[0m"
     read -p "> " -s GADMINPW2
     echo
 done
