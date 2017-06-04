@@ -60,6 +60,8 @@ echo -e "\r\033[K\e[36mCreating persistent storage for Grafana ----- Complete\e[
 
 echo
 
+clear
+
 echo -e "\e[7mPlease specify an admin password for Grafana\e[0m"
 read -p "> " -s GADMINPW
 
@@ -87,6 +89,12 @@ do
 done
 
 # Create Grafana Docker
+clear
+echo -e "\r\033[K\e[36mAdding GPG Key for Docker Repo ----- Complete\e[0m"
+echo -e "\r\033[K\e[36mUpdating Database ----- Complete\e[0m"
+echo -e "\r\033[K\e[36mVerifying Repo ----- Complete\e[0m"
+echo -e "\r\033[K\e[36mInstalling Docker ----- Complete\e[0m"
+echo -e "\r\033[K\e[36mCreating persistent storage for Grafana ----- Complete\e[0m"
 echo -ne "\e[36mCreating Grafana docker container - This make take awhile!\e[0m"
 sudo docker create \
 --name=grafana \
@@ -298,7 +306,7 @@ echo -e "\r\033[K\e[36mRemoving "Sudo" requirement from docker command ----- Com
 # Restart Announcment for previous command
 echo -e "\e[7mThe VM needs to be restarted in order to apply changes and finalize the installation.\e[0m"
 
-echo -e "\e[7mAfter the restart, Grafana can be accessed via http://${myip}:3000\e[0m"
+echo -e "\e[7mAfter the restart, Grafana can be accessed via http://${myip}:3000 & the InfluxDB AdminUI can be accessed via http://${myip}:8083\e[0m"
 
 echo -n "Press any key to restart"
 read -rsn1
