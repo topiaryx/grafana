@@ -75,19 +75,10 @@ then
 fi
 echo -e "\r\033[K\e[36mChecking for Python3-pip ----- Complete"
 
-# Install Setup.py
-echo -ne "\e[36mDownloading for Setup.py\e[0m"
-sudo apt-get install unzip >/dev/null 2>>plexmon_setup.log
-wget https://github.com/russianidiot/setupfiles.py/archive/master.zip >/dev/null 2>>plexmon_setup.log
-unzip master.zip >/dev/null 2>>plexmon_setup.log
-python3 install setup.py >/dev/null 2>>plexmon_setup.log
-echo -e "\r\033[K\e[36mDownloading Setup.py ----- Complete\e[0m"
-
 # Install Python Dependencies
 echo -ne "\e[36mDownloading Python Dependencies\e[0m"
-wget https://raw.githubusercontent.com/barrycarey/Plex-Data-Collector-For-InfluxDB/master/requirements.txt >/dev/null 2>>plexmon_setup.log
-sudo -H pip3 install -r requirements.txt >/dev/null 2>>plexmon_setup.log
-rm -rf requirements.txt >/dev/null 2>>plexmon_setup.log
+sudo pip3 install influxdb >/dev/null 2>>plexmon_setup.log
+sudo pip3 install request >/dev/null 2>>plexmon_setup.log
 echo -e "\r\033[K\e[36mDownloading Python Dependencies ----- Complete\e[0m"
 
 #Download and edit Config file
