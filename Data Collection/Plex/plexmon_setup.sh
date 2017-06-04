@@ -6,7 +6,7 @@ USER=$(logname)
 clear
 # Gather information
 echo -e "\e[7mWelcome to the PlexMon setup script. This script is will ask you a couple of questions and then we'll be under way!\e[0m"
-echo -e "\e[7mThis Script requires Python3, Pip3, and a couple of Python dependencies. Those will be installed during the script.\e[0m"
+echo -e "\e[7mThis Script requires Python3, Pip3, and a couple of Python dependencies. Those will be installed during the installation process.\e[0m"
 
 echo
 echo
@@ -47,7 +47,7 @@ read -p "> " PLEXSERVER
 
 echo
 
-echo -e "\e[7mWhat directory would you like these files to be saved? (Example /home/$logname/scripts/plex/)\e[0m"
+echo -e "\e[7mWhat directory would you like these files to be saved? (Example /home/$USER/scripts/plex/)\e[0m"
 read -p "> " DIR
 
 clear
@@ -77,7 +77,9 @@ echo -e "\r\033[K\e[36mChecking for Python3-pip ----- Complete"
 
 # Install Python Dependencies
 echo -ne "\e[36mDownloading Python Dependencies\e[0m"
-pip3 install -r https://raw.githubusercontent.com/barrycarey/Plex-Data-Collector-For-InfluxDB/master/requirements.txt >/dev/null 2>>plexmon_setup.log
+wget https://raw.githubusercontent.com/barrycarey/Plex-Data-Collector-For-InfluxDB/master/requirements.txt >/dev/null 2>>plexmon_setup.log
+pip3 install -r requirements.txt
+rm -rf requirements.txt
 echo -e "\r\033[K\e[36mDownloading Python Dependencies ----- Complete\e[0m"
 
 #Download and edit Config file
