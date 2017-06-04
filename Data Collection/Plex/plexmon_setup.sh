@@ -78,7 +78,7 @@ echo -e "\r\033[K\e[36mChecking for Python3-pip ----- Complete"
 # Install Python Dependencies
 echo -ne "\e[36mDownloading Python Dependencies\e[0m"
 wget https://raw.githubusercontent.com/barrycarey/Plex-Data-Collector-For-InfluxDB/master/requirements.txt >/dev/null 2>>plexmon_setup.log
-pip3 install -r requirements.txt >/dev/null 2>>plexmon_setup.log
+sudo -H pip3 install -r requirements.txt >/dev/null 2>>plexmon_setup.log
 rm -rf requirements.txt >/dev/null 2>>plexmon_setup.log
 echo -e "\r\033[K\e[36mDownloading Python Dependencies ----- Complete\e[0m"
 
