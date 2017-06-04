@@ -208,38 +208,6 @@ echo -e "\r\033[K\e[36mCreating InfluxDB SystemD file ----- Complete\e[0m"
 echo -ne "\e[36mEnabling InfluxDB Service\e[0m"
 systemctl enable influxdb.service >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mEnabling InfluxDB Service ----- Complete\e[0m"
-# CollecD Install - Docker - Ubuntu 16.04
-
-# Create CollectD Container
-echo -ne "\e[36mCreating CollectD docker container - This may take awhile!\e[0m"
-docker create \
-  --name collectd\
-  -e "SF_API_TOKEN=XXXXXXXXXXXXXXXXXXXXXX" \
-  -v /etc/hostname:/mnt/hostname:ro \
-  -v /proc:/mnt/proc:ro \
-  -v /etc:/mnt/etc:ro \
-  quay.io/signalfuse/collectd >>/dev/null 2>>install.log
-echo -e "\r\033[K\e[36mCreating CollectD docker container ----- Complete\e[0m"
-
-# Auto Start
-echo -ne "\e[36mCreating CollectD SystemD file\e[0m"
-sudo bash -c "cat >/lib/systemd/system/collectd.service" << EOF
-[Unit]
- Description=Collectd container
- Requires=docker.service
- After=docker.service
-
-[Service]
- User=root
- Restart=on-failure
- RestartSec=45
- ExecStart=/usr/bin/docker start -a collectd
- ExecStop=/usr/bin/docker stop -t 2 collectd
-
-[Install]
- WantedBy=multi-user.target
-EOF
-echo -e "\r\033[K\e[36mCreating CollectD SystemD file ----- Complete\e[0m"
 
 # Enable Service
 echo -ne "\e[36mEnabling CollectD Service\e[0m"
