@@ -55,7 +55,7 @@ clear
 # Ensure directory exists
 echo -ne "\e[36mVerifying Directory Status \e[0m"
 if [ ! -d "${DIR}" ]; then
-  mkdir -p "${DIR}";chown ${USER}:${USER} "${DIR}"
+sudo -u ${USER} mkdir -p "${DIR}"
 fi >/dev/null 2>plexmon_setup.log
 echo -e "\r\033[K\e[36mVerifying Directory Status ----- Complete\e[0m"
 
