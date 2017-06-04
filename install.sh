@@ -16,6 +16,9 @@ check_your_privilege
 
 clear
 
+# Grab IP for Link
+myip=$(ip route | head -n 1 | egrep 'dev (.*)' -o | cut -d' ' -f2 | xargs ip a s $1 | egrep '([0-9]{1,3}\.){3}[0-9]{1,3}' -o | awk '{ if (NR == 1) print $1}')
+
 # Update Package Database
 while true; do
     echo -n -e "\e[7mDo you wish to run system updates? [y/n]:\e[0m "
@@ -291,8 +294,11 @@ echo -ne "\e[36mRemoving "Sudo" requirement from docker command\e[0m"
 sudo usermod -aG docker $(logname) >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mRemoving "Sudo" requirement from docker command ----- Complete\e[0m"
 
+
 # Restart Announcment for previous command
-echo -e "\e[7mThe VM needs to be restarted in order to apply changes.\e[0m"
+echo -e "\e[7mThe VM needs to be restarted in order to apply changes and finalize the installation.\e[0m"
+
+echo -e "\e[7mAfter the restart, Grafana can be accessed via http://${myip}:3000\e[0m"
 
 echo -n "Press any key to restart"
 read -rsn1
