@@ -101,6 +101,8 @@ sudo docker create \
 --name=grafana \
 -p 3000:3000 \
 --volumes-from grafana-storage \
+-v /var/lib/grafana:/var/lib/grafana \
+-v /etc/grafana:/etc/grafana \
 -e "GF_SECURITY_ADMIN_PASSWORD=${GADMINPW}" \
 grafana/grafana >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mCreating Grafana docker container ----- Complete\e[0m"

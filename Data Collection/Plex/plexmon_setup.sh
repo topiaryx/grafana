@@ -55,7 +55,7 @@ clear
 # Ensure directory exists
 echo -ne "\e[36mVerifying Directory Status \e[0m"
 if [ ! -d "${DIR}" ]; then
-  mkdir -p "${DIR}"
+  mkdir -p "${DIR}";chown ${USER}:${USER} "${DIR}"
 fi >/dev/null 2>plexmon_setup.log
 echo -e "\r\033[K\e[36mVerifying Directory Status ----- Complete\e[0m"
 
@@ -102,7 +102,7 @@ echo -e "\r\033[K\e[36mCreating Config file ----- Complete\e[0m"
 
 # Create DATABASE
 echo -ne "\e[36mCreating database in InfluxDB. \e[0m"
-curl -i -XPOST "http://$INFLUXDBIP:$INFLUXDBPORT/query" --data-urlencode "q=CREATE DATABASE $DATABASE" >/dev/null 2>>plexmon_setup.log
+curl -i -XPOST "http://${INFLUXDBIP}:${INFLUXDBPORT}/query" --data-urlencode "q=CREATE DATABASE ${DATABASE}" >/dev/null 2>>plexmon_setup.log
 echo -e "\r\033[K\e[36mCreating database in InfluxDB ----- Complete\e[0m"
 
 # Download Collection Script
