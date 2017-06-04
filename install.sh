@@ -217,7 +217,6 @@ docker create \
   -e "SF_API_TOKEN=XXXXXXXXXXXXXXXXXXXXXX" \
   -v /etc/hostname:/mnt/hostname:ro \
   -v /proc:/mnt/proc:ro \
-  -v /var/run/docker.sock:/var/run/docker.sock \
   -v /etc:/mnt/etc:ro \
   quay.io/signalfuse/collectd >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mCreating CollectD docker container ----- Complete\e[0m"
