@@ -5,7 +5,7 @@ timestamp() {
 }
 timestamp
 echo -ne "\e[36mPulling latest from grafana/grafana\e[0m"
-docker pull grafana/grafana >>/dev/null 2>>install.log
+docker pull grafana/grafana >>/dev/null 2>>grafana_update.log
 echo -e "\r\033[K\e[36mPulling latest from grafana/grafana ----- Complete\e[0m"
 
 echo -ne "\e[36mStopping Grafana\e[0m"
@@ -54,9 +54,9 @@ sudo docker create \
 -p 3000:3000 \
 --volumes-from grafana-storage \
 -e "GF_SECURITY_ADMIN_PASSWORD=${GADMINPW}" \
-grafana/grafana >>/dev/null 2>>install.log
+grafana/grafana >>/dev/null 2>>grafana_update.log
 echo -e "\r\033[K\e[36mCreating Grafana docker container ----- Complete\e[0m"
 
 echo -ne "\e[36mStarting Grafana container!\e[0m"
-docker start grafana >>/dev/null 2>>install.log
+docker start grafana >>/dev/null 2>>grafana_update.log
 echo -e "\r\033[K\e[36mStarting Grafana container ----- Complete\e[0m"
