@@ -16,12 +16,15 @@ check_your_privilege
 
 clear
 
+# Grab IP for Link
+MYIP=$(ip route | head -n 1 | egrep 'dev (.*)' -o | cut -d' ' -f2 | xargs ip a s $1 | egrep '([0-9]{1,3}\.){3}[0-9]{1,3}' -o | awk '{ if (NR == 1) print $1}')
+
 # Update Package Database
 while true; do
     echo -n -e "\e[7mDo you wish to run system updates? [y/n]:\e[0m "
     read yn
     case $yn in
-        [yY] | [yY][Ee][Ss] ) echo -ne "\e[36mUpdating System - This may take awhile!\e[0m";  sudo apt-get -y update >/dev/null 2>>install.log && sudo apt-get -y upgrade >/dev/null 2>>install.log;echo -e "\r\033[K\e[36mUpdating System ----- Complete\e[0m"; break;; #(Run both in one line)
+        [yY] | [yY][Ee][Ss] ) echo -ne "\e[36mUpdating System - This may take awhile!\e[0m";  sudo apt-get -y update >/dev/null 2>>install.log && sudo apt-get -y upgrade >/dev/null 2>>install.log;clear;echo -e "\r\033[K\e[36mUpdating System ----- Complete\e[0m"; break;; #(Run both in one line)
         [nN] | [n|N][O|o] ) echo -e "\e[36mSkipping Updates\e[0m"; break;;  #Boring people don't update
         * ) echo -e "\e[7mPlease answer y or n.\e[0m ";;  #Error handling to get the right answer
     esac
@@ -48,14 +51,9 @@ echo -ne "\e[36mInstalling Docker\e[0m"
 apt-get install -y docker-engine >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mInstalling Docker ----- Complete\e[0m"
 
+clear
+
 # Grafana Install - Docker - Ubuntu 16.04
-
-# Create Persistent Storage
-echo -ne "\e[36mCreating persistent storage for Grafana\e[0m"
-docker run -d -v /var/lib/grafana --name grafana-storage busybox:latest >>/dev/null 2>>install.log
-echo -e "\r\033[K\e[36mCreating persistent storage for Grafana ----- Complete\e[0m"
-
-echo
 
 echo -e "\e[7mPlease specify an admin password for Grafana\e[0m"
 read -p "> " -s GADMINPW
@@ -71,22 +69,36 @@ echo
 
 while [ "${GADMINPW}" != "${GADMINPW2}" ];
 do
-    echo
-    echo -e "\e[41mPasswords do not match, please try again!\e[0m"
-    echo
-    echo -e "\e[7mPlease specify an admin password for Grafana\e[0m"
-    read -p "> " -s GADMINPW
-    echo
-    echo
-    echo -e "\e[7mPlease re-enter the password\e[0m"
-    read -p "> " -s GADMINPW2
-    echo
+ echo
+ echo -e "\e[41mPasswords do not match, please try again!\e[0m"
+ echo
+ echo -e "\e[7mPlease specify an admin password for Grafana\e[0m"
+ read -p "> " -s GADMINPW
+ echo
+ echo
+ echo -e "\e[7mPlease re-enter the password\e[0m"
+ read -p "> " -s GADMINPW2
+ echo
 done
+
+clear
+echo -e "\r\033[K\e[36mUpdating System ----- Complete\e[0m"
+echo -e "\r\033[K\e[36mAdding GPG Key for Docker Repo ----- Complete\e[0m"
+echo -e "\r\033[K\e[36mUpdating Database ----- Complete\e[0m"
+echo -e "\r\033[K\e[36mVerifying Repo ----- Complete\e[0m"
+echo -e "\r\033[K\e[36mInstalling Docker ----- Complete\e[0m"
+
+
+# Create Persistent Storage
+echo -ne "\e[36mCreating persistent storage for Grafana\e[0m"
+docker run -d -v /var/lib/grafana --name grafana-storage busybox:latest >>/dev/null 2>>install.log
+echo -e "\r\033[K\e[36mCreating persistent storage for Grafana ----- Complete\e[0m"
 
 # Create Grafana Docker
 echo -ne "\e[36mCreating Grafana docker container - This make take awhile!\e[0m"
 sudo docker create \
 --name=grafana \
+--restart always \
 -p 3000:3000 \
 --volumes-from grafana-storage \
 -e "GF_SECURITY_ADMIN_PASSWORD=${GADMINPW}" \
@@ -108,31 +120,6 @@ echo -ne "\e[36mDownloading Grafana update script\e[0m"
 wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Update%20Scripts/grafanaupdate.sh -O ~/updates/updategrafana.sh >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mDownloading Grafana update script ----- Complete\e[0m"
 
-# Create Auto Start Service
-echo -ne "\e[36mCreating Grafana SystemD file\e[0m"
-sudo bash -c "cat >/lib/systemd/system/grafana.service" << EOF
-[Unit]
- Description=grafana container
- Requires=docker.service
- After=docker.service
-
-[Service]
- User=root
- Restart=on-failure
- RestartSec=45
- ExecStart=/usr/bin/docker start -a grafana
- ExecStop=/usr/bin/docker stop -t 2 grafana
-
-[Install]
- WantedBy=multi-user.target
-EOF
-echo -e "\r\033[K\e[36mCreating Grafana SystemD file ----- Complete\e[0m"
-
-# Enable Grafana Service
-echo -ne "\e[36mEnabling Grafana service\e[0m"
-systemctl enable grafana.service >>/dev/null 2>>install.log
-echo -e "\r\033[K\e[36mEnabling Grafana service ----- Complete\e[0m"
-
 # InfluxDB - Docker - Ubuntu 16.04
 
 # Create Local Storage
@@ -143,7 +130,7 @@ echo -e "\r\033[K\e[36mCreating local storage for InfluxDB ----- Complete\e[0m"
 
 # Check Ownership
 echo -ne "\e[36mVerifying ownership\e[0m"
-chown ${USER:=$(/usr/bin/id -run)}:$USER -R /docker >>/dev/null 2>>install.log
+chown ${USER:=$(/usr/bin/id -run)}:${USER} -R /docker >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mVerifying ownership ----- Complete\e[0m"
 
 # Generate Default Config
@@ -155,6 +142,7 @@ echo -e "\r\033[K\e[36mGenerating default config file for InfluxDB ----- Complet
 echo -ne "\e[36mCreating InfluxDB docker container - This make take awhile!\e[0m"
 docker create \
 --name influxdb \
+--restart always \
 -e PUID=1000 -e PGID=1000 \
 -p 8083:8083 -p 8086:8086 \
 -v /docker/containers/influxdb/conf/influxdb.conf:/etc/influxdb/influxdb.conf:ro \
@@ -172,76 +160,13 @@ echo -ne "\e[36mDownloading InfluxDB update script\e[0m"
 wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Update%20Scripts/influxdbupdate.sh -O ~/updates/influxupdate.sh >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mDownloading InfluxDB update script ----- Complete\e[0m"
 
-# Setup Auto Start
-echo -ne "\e[36mCreating InfluxDB SystemD file\e[0m"
-sudo bash -c "cat >/lib/systemd/system/influxdb.service" << EOF  2>>install.log
-[Unit]
- Description=influxdb container
- Requires=docker.service
- After=docker.service
-
-[Service]
- User=root
- Restart=on-failure
- RestartSec=45
- ExecStart=/usr/bin/docker start -a influxdb
- ExecStop=/usr/bin/docker stop -t 2 influxdb
-
-[Install]
- WantedBy=multi-user.target
-EOF
-echo -e "\r\033[K\e[36mCreating InfluxDB SystemD file ----- Complete\e[0m"
-
-# Enable Service
-echo -ne "\e[36mEnabling InfluxDB Service\e[0m"
-systemctl enable influxdb.service >>/dev/null 2>>install.log
-echo -e "\r\033[K\e[36mEnabling InfluxDB Service ----- Complete\e[0m"
-# CollecD Install - Docker - Ubuntu 16.04
-
-# Create CollectD Container
-echo -ne "\e[36mCreating CollectD docker container - This may take awhile!\e[0m"
-docker create \
-  --name collectd\
-  -e "SF_API_TOKEN=XXXXXXXXXXXXXXXXXXXXXX" \
-  -v /etc/hostname:/mnt/hostname:ro \
-  -v /proc:/mnt/proc:ro \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  -v /etc:/mnt/etc:ro \
-  quay.io/signalfuse/collectd >>/dev/null 2>>install.log
-echo -e "\r\033[K\e[36mCreating CollectD docker container ----- Complete\e[0m"
-
-# Auto Start
-echo -ne "\e[36mCreating CollectD SystemD file\e[0m"
-sudo bash -c "cat >/lib/systemd/system/collectd.service" << EOF
-[Unit]
- Description=Collectd container
- Requires=docker.service
- After=docker.service
-
-[Service]
- User=root
- Restart=on-failure
- RestartSec=45
- ExecStart=/usr/bin/docker start -a collectd
- ExecStop=/usr/bin/docker stop -t 2 collectd
-
-[Install]
- WantedBy=multi-user.target
-EOF
-echo -e "\r\033[K\e[36mCreating CollectD SystemD file ----- Complete\e[0m"
-
-# Enable Service
-echo -ne "\e[36mEnabling CollectD Service\e[0m"
-systemctl enable collectd.service >>/dev/null 2>>install.log
-echo -e "\r\033[K\e[36mEnabling CollectD Service ----- Complete\e[0m"
-
 # Graphite Install - Docker - Ubuntu 16.04
 
 # Create Graphite Container
 echo -ne "\e[36mCreating Graphite docker container - This may take awhile!\e[0m"
 docker run -d\
  --name graphite\
- --restart=always\
+ --restart always \
  -p 80:80\
  -p 2003-2004:2003-2004\
  -p 2023-2024:2023-2024\
@@ -249,31 +174,6 @@ docker run -d\
  -p 8126:8126\
  hopsoft/graphite-statsd >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mCreating Graphite docker container ----- Complete\e[0m"
-
-# Auto Start
-echo -ne "\e[36mCreating Graphite SystemD file\e[0m"
-sudo bash -c "cat >/lib/systemd/system/graphite.service" << EOF
-[Unit]
- Description=Graphite container
- Requires=docker.service
- After=docker.service
-
-[Service]
- User=root
- Restart=on-failure
- RestartSec=45
- ExecStart=/usr/bin/docker start -a graphite
- ExecStop=/usr/bin/docker stop -t 2 graphite
-
-[Install]
- WantedBy=multi-user.target
-EOF
-echo -e "\r\033[K\e[36mCreating Graphite SystemD file ----- Complete\e[0m"
-
-# Enable Service
-echo -ne "\e[36mEnabling Graphite Service\e[0m"
-systemctl enable graphite.service >>/dev/null 2>>install.log
-echo -e "\r\033[K\e[36mEnabling Graphite Service ----- Complete\e[0m"
 
 # Enable InfluxDB WebUI
 echo -ne "\e[36mEnabling InfluxDB WebUI\e[0m"
@@ -291,8 +191,12 @@ echo -ne "\e[36mRemoving "Sudo" requirement from docker command\e[0m"
 sudo usermod -aG docker $(logname) >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mRemoving "Sudo" requirement from docker command ----- Complete\e[0m"
 
+
 # Restart Announcment for previous command
-echo -e "\e[7mThe VM needs to be restarted in order to apply changes.\e[0m"
+echo -e "\e[7mThe VM needs to be restarted in order to apply changes and finalize the installation.\e[0m"
+
+echo -e "\e[7mAfter the restart, Grafana can be accessed via http://${MYIP}:3000 with the user "Root" and the password you created earlier in the installation.\e[0m"
+echo -e "\e[7mThe InfluxDB AdminUI can be accessed via http://${MYIP}:8083. It does not require a username or password by default.\e[0m"
 
 echo -n "Press any key to restart"
 read -rsn1
