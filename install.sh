@@ -175,10 +175,10 @@ docker run -d\
  hopsoft/graphite-statsd >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mCreating Graphite docker container ----- Complete\e[0m"
 
-# Enable InfluxDB WebUI
-echo -ne "\e[36mEnabling InfluxDB WebUI\e[0m"
-sed -i '40s/.*/  enabled = true/' /docker/containers/influxdb/conf/influxdb.conf >>/dev/null 2>>install.log
-echo -e "\r\033[K\e[36mEnabling InfluxDB WebUI ----- Complete\e[0m"
+# Enable InfluxDB WebUI (07/19/17 - THIS HAS BEEN DISABLED AS THIS IS NO LONGER AN OPTION IN THE CONFIG FILE)
+# echo -ne "\e[36mEnabling InfluxDB WebUI\e[0m"
+# sed -i '40s/.*/  enabled = true/' /docker/containers/influxdb/conf/influxdb.conf >>/dev/null 2>>install.log
+# echo -e "\r\033[K\e[36mEnabling InfluxDB WebUI ----- Complete\e[0m"
 
 # Install other dependencies
 echo -ne "\e[36mInstalling SSHPASS and SNMP dependencies - This may take awhile!\e[0m"
