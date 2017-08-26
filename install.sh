@@ -12,7 +12,7 @@ check_your_privilege () {
 }
 check_your_privilege
 
-# Docker Installation for Fedora 26
+# Docker Installation for CentOS 7
 
 clear
 
@@ -30,8 +30,8 @@ while true; do
     esac
 done
 
-# Add GPG Key for Docker Repo
-echo "Adding repo for Fedora 26" | sudo tee /etc/apt/sources.list.d/docker.list >>/dev/null 2>>install.log
+# Add Docker Repo
+echo "Adding Docker Repo" | sudo tee /etc/apt/sources.list.d/docker.list >>/dev/null 2>>install.log
 dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mAdding Docker Repo ----- Complete\e[0m"
 
@@ -52,7 +52,7 @@ echo -e "\r\033[K\e[36mInstalling Docker ----- Complete\e[0m"
 
 clear
 
-# Grafana Install - Docker - Ubuntu 16.04
+# Grafana Install - Docker - CentOS 7
 
 echo -e "\e[7mPlease specify an admin password for Grafana\e[0m"
 read -p "> " -s GADMINPW
@@ -119,7 +119,7 @@ echo -ne "\e[36mDownloading Grafana update script\e[0m"
 wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Update%20Scripts/grafanaupdate.sh -O ~/updates/updategrafana.sh >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mDownloading Grafana update script ----- Complete\e[0m"
 
-# InfluxDB - Docker - Ubuntu 16.04
+# InfluxDB - Docker - CentOS 7
 
 # Create Local Storage
 echo -ne "\e[36mCreating local storage for InfluxDB\e[0m"
@@ -182,7 +182,7 @@ echo -e "\r\033[K\e[36mCreating Graphite docker container ----- Complete\e[0m"
 # Install other dependencies
 echo -ne "\e[36mInstalling SSHPASS and SNMP dependencies - This may take awhile!\e[0m"
 dnf install -y sshpass >>/dev/null 2>>install.log
-dnf install -y snmp snmp-mibs-downloader >>/dev/null 2>>install.log
+dnf install -y net-snmp net-snmp-devel.x86_64 net-snmp-utils.x86_64 >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mInstalling SSHPASS and SNMP dependencies ----- Complete\e[0m"
 
 # Remove the need to user Sudo before docker. This generally requires you to log out and log back in, which is why we restart at the end of the script.
@@ -195,7 +195,6 @@ echo -e "\r\033[K\e[36mRemoving "Sudo" requirement from docker command ----- Com
 echo -e "\e[7mThe VM needs to be restarted in order to apply changes and finalize the installation.\e[0m"
 
 echo -e "\e[7mAfter the restart, Grafana can be accessed via http://${MYIP}:3000 with the user "Root" and the password you created earlier in the installation.\e[0m"
-echo -e "\e[7mThe InfluxDB AdminUI can be accessed via http://${MYIP}:8083. It does not require a username or password by default.\e[0m"
 
 echo -n "Press any key to restart"
 read -rsn1
