@@ -12,7 +12,7 @@ check_your_privilege () {
 }
 check_your_privilege
 
-# Docker Installation for Ubuntu 16.04
+# Docker Installation for Fedora 26
 
 clear
 
@@ -24,31 +24,30 @@ while true; do
     echo -n -e "\e[7mDo you wish to run system updates? [y/n]:\e[0m "
     read yn
     case $yn in
-        [yY] | [yY][Ee][Ss] ) echo -ne "\e[36mUpdating System - This may take awhile!\e[0m";  sudo apt-get -y update >/dev/null 2>>install.log && sudo apt-get -y upgrade >/dev/null 2>>install.log;clear;echo -e "\r\033[K\e[36mUpdating System ----- Complete\e[0m"; break;; #(Run both in one line)
+        [yY] | [yY][Ee][Ss] ) echo -ne "\e[36mUpdating System - This may take awhile!\e[0m"; yum install epel-release -y && yum install dnf -y && dnf -y dnf-plugins-core && dnf -y update >/dev/null 2>>install.log && dnf -y upgrade >/dev/null 2>>install.log;clear;echo -e "\r\033[K\e[36mUpdating System ----- Complete\e[0m"; break;; #(Run both in one line)
         [nN] | [n|N][O|o] ) echo -e "\e[36mSkipping Updates\e[0m"; break;;  #Boring people don't update
         * ) echo -e "\e[7mPlease answer y or n.\e[0m ";;  #Error handling to get the right answer
     esac
 done
 
 # Add GPG Key for Docker Repo
-echo -ne "\e[36mAdding GPG Key for Docker Repo\e[0m"
-apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D >>/dev/null 2>>install.log
-echo "deb https://apt.dockerproject.org/repo ubuntu-xenial main" | sudo tee /etc/apt/sources.list.d/docker.list >>/dev/null 2>>install.log
-echo -e "\r\033[K\e[36mAdding GPG Key for Docker Repo ----- Complete\e[0m"
+echo "Adding repo for Fedora 26" | sudo tee /etc/apt/sources.list.d/docker.list >>/dev/null 2>>install.log
+dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo >>/dev/null 2>>install.log
+echo -e "\r\033[K\e[36mAdding Docker Repo ----- Complete\e[0m"
 
 # Update Database
 echo -ne "\e[36mUpdating Database\e[0m"
-apt-get update >>/dev/null 2>>install.log
+dnf update >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mUpdating Database ----- Complete\e[0m"
 
 # Verify Repo
 echo -ne "\e[36mVerifying Repo\e[0m"
-apt-cache policy docker-engine >>/dev/null 2>>install.log
+dnf makecache fast >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mVerifying Repo ----- Complete\e[0m"
 
 # Install Docker
 echo -ne "\e[36mInstalling Docker\e[0m"
-apt-get install -y docker-engine >>/dev/null 2>>install.log
+dnf install -y docker-ce >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mInstalling Docker ----- Complete\e[0m"
 
 clear
@@ -182,8 +181,8 @@ echo -e "\r\033[K\e[36mCreating Graphite docker container ----- Complete\e[0m"
 
 # Install other dependencies
 echo -ne "\e[36mInstalling SSHPASS and SNMP dependencies - This may take awhile!\e[0m"
-apt-get install -y sshpass >>/dev/null 2>>install.log
-apt-get install -y snmp snmp-mibs-downloader >>/dev/null 2>>install.log
+dnf install -y sshpass >>/dev/null 2>>install.log
+dnf install -y snmp snmp-mibs-downloader >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mInstalling SSHPASS and SNMP dependencies ----- Complete\e[0m"
 
 # Remove the need to user Sudo before docker. This generally requires you to log out and log back in, which is why we restart at the end of the script.
