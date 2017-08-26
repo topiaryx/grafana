@@ -198,7 +198,7 @@ echo -e "\r\033[K\e[36mCreating Graphite docker container ----- Complete\e[0m"
 # Install other dependencies
 echo -ne "\e[36mInstalling SSHPASS and SNMP dependencies - This may take awhile!\e[0m"
 yum install -y sshpass >>/dev/null 2>>install.log
-yum install net-snmp net-snmp-utils net-snmp-devel >>/dev/null 2>>install.log
+yum install -y net-snmp net-snmp-utils net-snmp-devel >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mInstalling SSHPASS and SNMP dependencies ----- Complete\e[0m"
 
 # Remove the need to user Sudo before docker. This generally requires you to log out and log back in, which is why we restart at the end of the script.
