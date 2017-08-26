@@ -209,7 +209,7 @@ echo -e "\r\033[K\e[36mRemoving "Sudo" requirement from docker command ----- Com
 # Restart Announcment for previous command
 echo -e "\e[7mThe VM needs to be restarted in order to apply changes and finalize the installation.\e[0m"
 
-echo -e "\e[7mAfter the restart, Grafana can be accessed via http://${my_ip}:3000 with the user "Root" and the password you created earlier in the installation.\e[0m"
+echo -e "\e[7mAfter the restart, Grafana can be accessed via http://${my_ip}:3000 with the user "admin" and the password you created earlier in the installation.\e[0m"
 
 echo -n "Press any key to restart"
 read -rsn1
