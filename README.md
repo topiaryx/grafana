@@ -1,4 +1,4 @@
-Foun this on /r/homelab and changed it around to work with CentOS 7 - made minor revisions during testing. Original script by Tyler at Cyanlab (link below to his original guide).
+Found this on /r/homelab and changed it around to work with CentOS 7 - made minor revisions during testing. Original script by Tyler at Cyanlab (link below to his original guide).
 
 # [STEP BY STEP GUIDE - CLICK ME](http://cyanlab.io/grafana-the-absolute-beginners-guide/)
 
