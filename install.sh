@@ -36,9 +36,9 @@ dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce
 echo -e "\r\033[K\e[36mAdding Docker Repo ----- Complete\e[0m"
 
 # Update Database
-echo -ne "\e[36mUpdating Database\e[0m"
-dnf update >>/dev/null 2>>install.log
-echo -e "\r\033[K\e[36mUpdating Database ----- Complete\e[0m"
+# echo -ne "\e[36mUpdating Database\e[0m"
+# dnf update -y >>/dev/null 2>>install.log
+# echo -e "\r\033[K\e[36mUpdating Database ----- Complete\e[0m"
 
 # Verify Repo
 echo -ne "\e[36mVerifying Repo\e[0m"
