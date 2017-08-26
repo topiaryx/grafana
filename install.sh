@@ -99,6 +99,8 @@ echo -e "\r\033[K\e[36mInstalling Docker Repo ----- Complete\e[0m"
 echo -e "\r\033[K\e[36mUpdating Database ----- Complete\e[0m"
 echo -e "\r\033[K\e[36mVerifying Repo ----- Complete\e[0m"
 echo -e "\r\033[K\e[36mInstalling Docker ----- Complete\e[0m"
+echo -e "\r\033[K\e[36mStarting Docker ----- Complete\e[0m"
+echo -e "\r\033[K\e[36mEnabling Docker ----- Complete\e[0m"
 
 # Create Persistent Storage
 echo -ne "\e[36mCreating persistent storage for Grafana\e[0m"
