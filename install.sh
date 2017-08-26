@@ -52,6 +52,16 @@ echo -ne "\e[36mInstalling Docker-CE\e[0m"
 yum install -y docker-ce >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mInstalling Docker-CE ----- Complete\e[0m"
 
+# Start Docker
+echo -ne "\e[36mStarting Docker\e[0m"
+systemctl start docker
+echo -e "\r\033[K\e[36mStarting Docker ----- Complete\e[0m"
+
+# Enable Docker
+echo -ne "\e[36mEnabling Docker\e[0m"
+systemctl enable docker
+echo -e "\r\033[K\e[36mEnabling Docker ----- Complete\e[0m"
+
 #
 # Grafana Install - Removed '-s' for testing
 #
