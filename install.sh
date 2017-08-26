@@ -108,7 +108,7 @@ docker run -d -v /var/lib/grafana --name grafana-storage busybox:latest >>/dev/n
 echo -e "\r\033[K\e[36mCreating persistent storage for Grafana ----- Complete\e[0m"
 
 # Create Grafana Docker
-echo -ne "\e[36mCreating Grafana docker container - This may take awhile!\e[0m"
+echo -ne "\e[36mCreating Grafana docker container - This make take awhile!\e[0m"
 sudo docker create \
 --name=grafana \
 --restart always \
@@ -194,8 +194,8 @@ echo -e "\r\033[K\e[36mCreating Graphite docker container ----- Complete\e[0m"
 
 # Install other dependencies
 echo -ne "\e[36mInstalling SSHPASS and SNMP dependencies - This may take awhile!\e[0m"
-apt-get install -y sshpass >>/dev/null 2>>install.log
-apt-get install -y snmp snmp-mibs-downloader >>/dev/null 2>>install.log
+yum install -y sshpass >>/dev/null 2>>install.log
+yum install net-snmp net-snmp-utils net-snmp-devel >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mInstalling SSHPASS and SNMP dependencies ----- Complete\e[0m"
 
 # Remove the need to user Sudo before docker. This generally requires you to log out and log back in, which is why we restart at the end of the script.
