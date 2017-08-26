@@ -32,6 +32,8 @@ while true; do
     esac
 done
 
+echo
+
 ## Add Docker CentOS Repo and Prereq's
 echo -ne "\e[36mInstalling Docker Repo\e[0m"
 yum install -y yum-utils device-mapper-persistent-data lvm2 >>/dev/null 2>>install.log
@@ -59,6 +61,7 @@ echo -e "\r\033[K\e[36mStarting Docker ----- Complete\e[0m"
 
 # Enable Docker
 echo -ne "\e[36mEnabling Docker\e[0m"
+echo
 systemctl enable docker
 echo -e "\r\033[K\e[36mEnabling Docker ----- Complete\e[0m"
 
@@ -67,13 +70,13 @@ echo -e "\r\033[K\e[36mEnabling Docker ----- Complete\e[0m"
 #
 
 echo -e "\e[7mPlease specify an admin password for Grafana\e[0m"
-read -p "> " -s GADMINPW
+read -p "> " GADMINPW
 
 echo
 echo
 
 echo -e "\e[7mPlease re-enter the password\e[0m"
-read -p "> " -s GADMINPW2
+read -p "> " GADMINPW2
 
 echo
 echo
@@ -195,7 +198,7 @@ echo -e "\r\033[K\e[36mCreating Graphite docker container ----- Complete\e[0m"
 # Install other dependencies
 echo -ne "\e[36mInstalling SSHPASS and SNMP dependencies - This may take awhile!\e[0m"
 yum install -y sshpass >>/dev/null 2>>install.log
-yum install net-snmp net-snmp-utils net-snmp-devel -y >>/dev/null 2>>install.log
+yum install net-snmp net-snmp-utils net-snmp-devel >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mInstalling SSHPASS and SNMP dependencies ----- Complete\e[0m"
 
 # Remove the need to user Sudo before docker. This generally requires you to log out and log back in, which is why we restart at the end of the script.
@@ -206,7 +209,7 @@ echo -e "\r\033[K\e[36mRemoving "Sudo" requirement from docker command ----- Com
 # Restart Announcment for previous command
 echo -e "\e[7mThe VM needs to be restarted in order to apply changes and finalize the installation.\e[0m"
 
-echo -e "\e[7mAfter the restart, Grafana can be accessed via http://${my_ip}:3000 with the user "admin" and the password you created earlier in the installation.\e[0m"
+echo -e "\e[7mAfter the restart, Grafana can be accessed via http://${my_ip}:3000 with the user "Root" and the password you created earlier in the installation.\e[0m"
 
 echo -n "Press any key to restart"
 read -rsn1
