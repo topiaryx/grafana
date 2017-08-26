@@ -66,17 +66,17 @@ systemctl enable docker
 echo -e "\r\033[K\e[36mEnabling Docker ----- Complete\e[0m"
 
 #
-# Grafana Install - Removed '-s' for testing
+# Grafana Install
 #
 
 echo -e "\e[7mPlease specify an admin password for Grafana\e[0m"
-read -p "> " GADMINPW
+read -p "> " -s GADMINPW
 
 echo
 echo
 
 echo -e "\e[7mPlease re-enter the password\e[0m"
-read -p "> " GADMINPW2
+read -p "> " -s GADMINPW2
 
 echo
 echo
@@ -88,11 +88,11 @@ do
  echo -e "\e[41mPasswords do not match, please try again!\e[0m"
  echo
  echo -e "\e[7mPlease specify an admin password for Grafana\e[0m"
- read -p "> " GADMINPW
+ read -p "> " -s GADMINPW
  echo
  echo
  echo -e "\e[7mPlease re-enter the password\e[0m"
- read -p "> " GADMINPW2
+ read -p "> " -s GADMINPW2
  echo
 done
 
