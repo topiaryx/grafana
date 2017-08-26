@@ -1,7 +1,7 @@
 #!/bin/bash
-
 # This script will install Docker, Grafana, InfluxDB, Graphite & CollectD. It will also add systemd service files to ensure auto startup each boot.
-# This script was created by reddit user /u/tyler_hammer. This is a combination of several guides with edits to make it as easy as possible for new people to start.
+# This script was originally created by reddit user /u/tyler_hammer and was modified by reddit user /u/topiaryx to work on CentOS 7.
+# This is a combination of several guides with edits to make it as easy as possible for new people to start.
 
 # Checking for Root Permissions # Thanks to Github User "codygarver" for the recommendation
 check_your_privilege () {
@@ -12,81 +12,83 @@ check_your_privilege () {
 }
 check_your_privilege
 
-# Docker Installation for CentOS 7
+#
+# Docker installation for CentOS 7+
+#
 
 clear
 
-# Grab IP for Link
-MYIP=$(ip route | head -n 1 | egrep 'dev (.*)' -o | cut -d' ' -f2 | xargs ip a s $1 | egrep '([0-9]{1,3}\.){3}[0-9]{1,3}' -o | awk '{ if (NR == 1) print $1}')
+# Grab machine IP for link
+my_ip=$(ip route | head -n 1 | egrep 'dev (.*)' -o | cut -d' ' -f2 | xargs ip a s $1 | egrep '([0-9]{1,3}\.){3}[0-9]{1,3}' -o | awk '{ if (NR == 1) print $1}')
 
-# Update Package Database
+# Update package database and system (installs EPEL)
 while true; do
-    echo -n -e "\e[7mDo you wish to run system updates? [y/n]:\e[0m "
-    read yn
-    case $yn in
-        [yY] | [yY][Ee][Ss] ) echo -ne "\e[36mUpdating System - This may take awhile!\e[0m"; yum install epel-release -y && yum install dnf -y && dnf -y dnf-plugins-core && dnf -y update >/dev/null 2>>install.log && dnf -y upgrade >/dev/null 2>>install.log;clear;echo -e "\r\033[K\e[36mUpdating System ----- Complete\e[0m"; break;; #(Run both in one line)
-        [nN] | [n|N][O|o] ) echo -e "\e[36mSkipping Updates\e[0m"; break;;  #Boring people don't update
-        * ) echo -e "\e[7mPlease answer y or n.\e[0m ";;  #Error handling to get the right answer
+	echo -n -e "\e[7mDo you wish to run system updates? [y/n]:\e[0m "
+	read yn
+	case $yn in
+		[yY] | [yY] | [yY][Ee][Ss] ) echo -ne "\e[36mUpdating System - This may take awhile!\e[0m"; yum install -y epel-release >/dev/null 2>>install.log && yum update -y >/dev/null 2>>install.log && yum upgrade -y >/dev/null 2>>install.log; clear; echo -e "\r\033[K\e[36mUpdating System ----- Complete\e[0m"; break;; #(Run both in one line)
+		[nN] | [n|N][O|o] ) echo -e "\e[36mSkipping Updates\e[0m"; break;;  #Boring people don't update																							
+		* ) echo -e "\e[7mPlease answer y or n.\e[0m ";;  #Error handling to get the right answer
     esac
 done
 
-# Add Docker Repo
-echo "Adding Docker Repo" | sudo tee /etc/apt/sources.list.d/docker.list >>/dev/null 2>>install.log
-dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo >>/dev/null 2>>install.log
-echo -e "\r\033[K\e[36mAdding Docker Repo ----- Complete\e[0m"
+## Add Docker CentOS Repo and Prereq's
+echo -ne "\e[36mInstalling Docker Repo\e[0m"
+yum install -y yum-utils device-mapper-persistent-data lvm2 >>/dev/null 2>>install.log
+yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo -y >>/dev/null 2>>install.log
 
 # Update Database
-# echo -ne "\e[36mUpdating Database\e[0m"
-# dnf update -y >>/dev/null 2>>install.log
-# echo -e "\r\033[K\e[36mUpdating Database ----- Complete\e[0m"
+echo -ne "\e[36mUpdating Database\e[0m"
+yum update >>/dev/null 2>>install.log
+echo -e "\r\033[K\e[36mUpdating Database ----- Complete\e[0m"
 
 # Verify Repo
 echo -ne "\e[36mVerifying Repo\e[0m"
-dnf makecache fast >>/dev/null 2>>install.log
+yum makecache fast >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mVerifying Repo ----- Complete\e[0m"
 
 # Install Docker
-echo -ne "\e[36mInstalling Docker\e[0m"
-dnf install -y docker-ce >>/dev/null 2>>install.log
-echo -e "\r\033[K\e[36mInstalling Docker ----- Complete\e[0m"
+echo -ne "\e[36mInstalling Docker-CE\e[0m"
+yum install -y docker-ce >>/dev/null 2>>install.log
+echo -e "\r\033[K\e[36mInstalling Docker-CE ----- Complete\e[0m"
 
-clear
-
-# Grafana Install - Docker - CentOS 7
+#
+# Grafana Install - Removed '-s' for testing
+#
 
 echo -e "\e[7mPlease specify an admin password for Grafana\e[0m"
-read -p "> " -s GADMINPW
+read -p "> " GADMINPW
 
 echo
 echo
 
 echo -e "\e[7mPlease re-enter the password\e[0m"
-read -p "> " -s GADMINPW2
+read -p "> " GADMINPW2
 
 echo
 echo
 
+# Make sure passwords are the same before continuing
 while [ "${GADMINPW}" != "${GADMINPW2}" ];
 do
  echo
  echo -e "\e[41mPasswords do not match, please try again!\e[0m"
  echo
  echo -e "\e[7mPlease specify an admin password for Grafana\e[0m"
- read -p "> " -s GADMINPW
+ read -p "> " GADMINPW
  echo
  echo
  echo -e "\e[7mPlease re-enter the password\e[0m"
- read -p "> " -s GADMINPW2
+ read -p "> " GADMINPW2
  echo
 done
 
 clear
 echo -e "\r\033[K\e[36mUpdating System ----- Complete\e[0m"
-echo -e "\r\033[K\e[36mAdding GPG Key for Docker Repo ----- Complete\e[0m"
+echo -e "\r\033[K\e[36mInstalling Docker Repo ----- Complete\e[0m"
 echo -e "\r\033[K\e[36mUpdating Database ----- Complete\e[0m"
 echo -e "\r\033[K\e[36mVerifying Repo ----- Complete\e[0m"
 echo -e "\r\033[K\e[36mInstalling Docker ----- Complete\e[0m"
-
 
 # Create Persistent Storage
 echo -ne "\e[36mCreating persistent storage for Grafana\e[0m"
@@ -116,10 +118,12 @@ echo -e "\r\033[K\e[36mCreating Update Folder ----- Complete\e[0m"
 
 # Download Grafana Update Script
 echo -ne "\e[36mDownloading Grafana update script\e[0m"
-wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Update%20Scripts/grafanaupdate.sh -O ~/updates/updategrafana.sh >>/dev/null 2>>install.log
+wget https://raw.githubusercontent.com/topiaryx/grafana/master/Update%20Scripts/grafanaupdate.sh -O ~/updates/updategrafana.sh >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mDownloading Grafana update script ----- Complete\e[0m"
 
-# InfluxDB - Docker - CentOS 7
+#
+# InfluxDB Install
+#
 
 # Create Local Storage
 echo -ne "\e[36mCreating local storage for InfluxDB\e[0m"
@@ -156,10 +160,12 @@ echo -e "\r\033[K\e[36mStarting InfluxDB ----- Complete\e[0m"
 
 # Create Influx Update Script
 echo -ne "\e[36mDownloading InfluxDB update script\e[0m"
-wget https://raw.githubusercontent.com/tylerhammer/grafana/master/Update%20Scripts/influxdbupdate.sh -O ~/updates/influxupdate.sh >>/dev/null 2>>install.log
+wget https://raw.githubusercontent.com/topiaryx/grafana/master/Update%20Scripts/influxdbupdate.sh -O ~/updates/influxupdate.sh >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mDownloading InfluxDB update script ----- Complete\e[0m"
 
-# Graphite Install - Docker - Ubuntu 16.04
+#
+# Graphite Install - Removed InfluxDB WebUI code
+#
 
 # Create Graphite Container
 echo -ne "\e[36mCreating Graphite docker container - This may take awhile!\e[0m"
@@ -174,15 +180,10 @@ docker run -d\
  hopsoft/graphite-statsd >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mCreating Graphite docker container ----- Complete\e[0m"
 
-# Enable InfluxDB WebUI (07/19/17 - THIS HAS BEEN DISABLED AS THIS IS NO LONGER AN OPTION IN THE CONFIG FILE)
-# echo -ne "\e[36mEnabling InfluxDB WebUI\e[0m"
-# sed -i '40s/.*/  enabled = true/' /docker/containers/influxdb/conf/influxdb.conf >>/dev/null 2>>install.log
-# echo -e "\r\033[K\e[36mEnabling InfluxDB WebUI ----- Complete\e[0m"
-
 # Install other dependencies
 echo -ne "\e[36mInstalling SSHPASS and SNMP dependencies - This may take awhile!\e[0m"
-dnf install -y sshpass >>/dev/null 2>>install.log
-dnf install -y net-snmp net-snmp-devel.x86_64 net-snmp-utils.x86_64 >>/dev/null 2>>install.log
+apt-get install -y sshpass >>/dev/null 2>>install.log
+apt-get install -y snmp snmp-mibs-downloader >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mInstalling SSHPASS and SNMP dependencies ----- Complete\e[0m"
 
 # Remove the need to user Sudo before docker. This generally requires you to log out and log back in, which is why we restart at the end of the script.
@@ -190,11 +191,11 @@ echo -ne "\e[36mRemoving "Sudo" requirement from docker command\e[0m"
 sudo usermod -aG docker $(logname) >>/dev/null 2>>install.log
 echo -e "\r\033[K\e[36mRemoving "Sudo" requirement from docker command ----- Complete\e[0m"
 
-
 # Restart Announcment for previous command
 echo -e "\e[7mThe VM needs to be restarted in order to apply changes and finalize the installation.\e[0m"
 
 echo -e "\e[7mAfter the restart, Grafana can be accessed via http://${MYIP}:3000 with the user "Root" and the password you created earlier in the installation.\e[0m"
+echo -e "\e[7mThe InfluxDB AdminUI can be accessed via http://${MYIP}:8083. It does not require a username or password by default.\e[0m"
 
 echo -n "Press any key to restart"
 read -rsn1
