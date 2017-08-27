@@ -32,8 +32,6 @@ while true; do
     esac
 done
 
-echo
-
 ## Add Docker CentOS Repo and Prereq's
 echo -ne "\e[36mInstalling Docker Repo\e[0m"
 yum install -y yum-utils device-mapper-persistent-data lvm2 >>/dev/null 2>>install.log
