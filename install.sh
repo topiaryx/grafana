@@ -3,6 +3,8 @@
 # This script was originally created by reddit user /u/tyler_hammer and was modified by reddit user /u/topiaryx to work on CentOS 7.
 # This is a combination of several guides with edits to make it as easy as possible for new people to start.
 
+set -x
+
 # Checking for Root Permissions # Thanks to Github User "codygarver" for the recommendation
 check_your_privilege () {
     if [[ "$(id -u)" != 0 ]]; then
